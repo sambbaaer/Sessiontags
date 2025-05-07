@@ -1,0 +1,102 @@
+/**
+ * SessionTags Admin Styles
+ */
+
+.sessiontags-admin {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.sessiontags-admin .sessiontags-description {
+    background-color: #f8f8f8;
+    border-left: 4px solid #007cba;
+    padding: 12px 15px;
+    margin: 20px 0;
+}
+
+.sessiontags-admin .sessiontags-parameters,
+.sessiontags-admin .sessiontags-url-shortening {
+    margin-bottom: 30px;
+}
+
+.sessiontags-admin .sessiontags-example-url,
+.sessiontags-admin .sessiontags-usage {
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.sessiontags-admin .sessiontags-example-url-display {
+    display: flex;
+    align-items: center;
+    margin: 15px 0;
+}
+
+.sessiontags-admin .sessiontags-example-url-display code {
+    flex: 1;
+    padding: 10px;
+    margin-right: 10px;
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    word-break: break-all;
+    font-size: 13px;
+}
+
+.sessiontags-admin .sessiontags-usage-section {
+    margin-bottom: 25px;
+}
+
+.sessiontags-admin .sessiontags-usage-section h3 {
+    margin-top: 0;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #eee;
+}
+
+.sessiontags-admin .sessiontags-usage-section code {
+    background-color: #f5f5f5;
+    padding: 3px 5px;
+    border-radius: 3px;
+}
+
+.sessiontags-admin .sessiontags-usage-section ul {
+    margin-left: 20px;
+    list-style-type: disc;
+}
+
+.sessiontags-admin .remove-parameter {
+    margin-left: 10px;
+}
+
+.sessiontags-admin .add-parameter {
+    margin-top: 10px;
+}
+
+.sessiontags-admin .sessiontags-url-shortening h3 {
+    margin-top: 20px;
+}
+
+.sessiontags-admin .sessiontags-url-shortening table {
+    margin-top: 10px;
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 600px;
+}
+
+.sessiontags-admin .sessiontags-url-shortening table th,
+.sessiontags-admin .sessiontags-url-shortening table td {
+    padding: 8px;
+    border: 1px solid #ddd;
+}
+
+.sessiontags-admin .sessiontags-url-shortening table th {
+    background-color: #f5f5f5;
+    font-weight: bold;
+    text-align: left;
+}
+
+.sessiontags-admin .sessiontags-url-shortening input[type="text"].small-text {
+    width: 80px;
+}
