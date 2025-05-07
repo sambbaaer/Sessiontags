@@ -15,8 +15,48 @@
 }
 
 .sessiontags-admin .sessiontags-parameters,
-.sessiontags-admin .sessiontags-url-shortening {
+.sessiontags-admin .sessiontags-encoding-settings {
     margin-bottom: 30px;
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.sessiontags-admin .sessiontags-parameter-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 15px;
+}
+
+.sessiontags-admin .sessiontags-parameter-table thead th {
+    background-color: #f5f5f5;
+    padding: 10px;
+    text-align: left;
+    font-weight: bold;
+    border-bottom: 1px solid #ddd;
+}
+
+.sessiontags-admin .sessiontags-parameter-table tbody td {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+}
+
+.sessiontags-admin .sessiontags-parameter-table .sessiontags-parameter-name {
+    width: 40%;
+}
+
+.sessiontags-admin .sessiontags-parameter-table .sessiontags-parameter-shortcode {
+    width: 15%;
+}
+
+.sessiontags-admin .sessiontags-parameter-table .sessiontags-parameter-fallback {
+    width: 30%;
+}
+
+.sessiontags-admin .add-parameter {
+    margin-top: 10px;
 }
 
 .sessiontags-admin .sessiontags-example-url,
@@ -55,6 +95,11 @@
     border-bottom: 1px solid #eee;
 }
 
+.sessiontags-admin .sessiontags-usage-section h4 {
+    margin-top: 15px;
+    margin-bottom: 5px;
+}
+
 .sessiontags-admin .sessiontags-usage-section code {
     background-color: #f5f5f5;
     padding: 3px 5px;
@@ -66,37 +111,104 @@
     list-style-type: disc;
 }
 
+.sessiontags-admin .sessiontags-usage-section ol {
+    margin-left: 20px;
+    list-style-type: decimal;
+}
+
 .sessiontags-admin .remove-parameter {
     margin-left: 10px;
 }
 
-.sessiontags-admin .add-parameter {
-    margin-top: 10px;
+.sessiontags-admin .secret-key-display {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
 }
 
-.sessiontags-admin .sessiontags-url-shortening h3 {
-    margin-top: 20px;
+.sessiontags-admin .secret-key-display input {
+    margin-right: 10px;
+    background-color: #f9f9f9;
 }
 
-.sessiontags-admin .sessiontags-url-shortening table {
-    margin-top: 10px;
-    border-collapse: collapse;
-    width: 100%;
-    max-width: 600px;
+.sessiontags-admin .regenerate-key {
+    white-space: nowrap;
 }
 
-.sessiontags-admin .sessiontags-url-shortening table th,
-.sessiontags-admin .sessiontags-url-shortening table td {
-    padding: 8px;
-    border: 1px solid #ddd;
-}
+/* Responsives Design für kleinere Bildschirme */
+@media screen and (max-width: 782px) {
 
-.sessiontags-admin .sessiontags-url-shortening table th {
-    background-color: #f5f5f5;
-    font-weight: bold;
-    text-align: left;
-}
+    .sessiontags-admin .sessiontags-parameter-table,
+    .sessiontags-admin .sessiontags-parameter-table thead,
+    .sessiontags-admin .sessiontags-parameter-table tbody,
+    .sessiontags-admin .sessiontags-parameter-table th,
+    .sessiontags-admin .sessiontags-parameter-table td,
+    .sessiontags-admin .sessiontags-parameter-table tr {
+        display: block;
+    }
 
-.sessiontags-admin .sessiontags-url-shortening input[type="text"].small-text {
-    width: 80px;
+    .sessiontags-admin .sessiontags-parameter-table thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    .sessiontags-admin .sessiontags-parameter-table tr {
+        border: 1px solid #ddd;
+        margin-bottom: 15px;
+    }
+
+    .sessiontags-admin .sessiontags-parameter-table td {
+        border: none;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        padding-left: 50%;
+    }
+
+    .sessiontags-admin .sessiontags-parameter-table td:before {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        left: 10px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        font-weight: bold;
+    }
+
+    .sessiontags-admin .sessiontags-parameter-table td:nth-of-type(1):before {
+        content: "Parameter-Name";
+    }
+
+    .sessiontags-admin .sessiontags-parameter-table td:nth-of-type(2):before {
+        content: "URL-Kurzform";
+    }
+
+    .sessiontags-admin .sessiontags-parameter-table td:nth-of-type(3):before {
+        content: "Standard-Fallback";
+    }
+
+    .sessiontags-admin .sessiontags-parameter-table td:nth-of-type(4):before {
+        content: "Aktionen";
+    }
+
+    .sessiontags-admin .sessiontags-example-url-display {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .sessiontags-admin .sessiontags-example-url-display code {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+
+    .sessiontags-admin .secret-key-display {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .sessiontags-admin .secret-key-display input {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
 }

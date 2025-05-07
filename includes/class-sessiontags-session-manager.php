@@ -41,19 +41,22 @@ class SessionTagsSessionManager {
      * Verarbeitet die URL-Parameter und speichert sie in der Session
      */
     private function process_url_parameters() {
-        // Zu verfolgende Parameter und Kürzel aus den Einstellungen holen
+        // Zu verfolgende Parameter holen
         $tracked_params = $this->get_tracked_parameters();
-        $url_shortcodes = $this->get_url_shortcodes();
         $use_encoding = $this->is_url_encoding_enabled();
 
         // Parameter-Map für die Zuordnung von Kürzeln zu Original-Namen erstellen
         $param_map = [];
         foreach ($tracked_params as $param) {
-            $param_map[$param] = $param; // Original-Parameter auf sich selbst mappen
+            $param_name = $param['name'];
+            $param_shortcode = !empty($param['shortcode']) ? $param['shortcode'] : '';
+            
+            // Original-Parameter auf sich selbst mappen
+            $param_map[$param_name] = $param_name;
 
             // Kürzel auf Original-Parameter mappen, falls vorhanden
-            if (isset($url_shortcodes[$param]) && !empty($url_shortcodes[$param])) {
-                $param_map[$url_shortcodes[$param]] = $param;
+            if (!empty($param_shortcode)) {
+                $param_map[$param_shortcode] = $param_name;
             }
         }
 
@@ -84,15 +87,6 @@ class SessionTagsSessionManager {
     }
 
     /**
-     * Holt die Kürzel für die URL-Parameter aus den Einstellungen
-     *
-     * @return array Die Kürzel für die URL-Parameter
-     */
-    public function get_url_shortcodes() {
-        return get_option('sessiontags_url_shortcodes', []);
-    }
-
-    /**
      * Kodiert einen Parameter-Wert
      *
      * @param string $value Der Wert, der kodiert werden soll
@@ -106,70 +100,3 @@ class SessionTagsSessionManager {
         // URL-sichere Kodierung
         return strtr($encoded, '+/=', '-_,');
     }
-
-    /**
-     * Dekodiert einen Parameter-Wert
-     *
-     * @param string $value Der Wert, der dekodiert werden soll
-     * @return string Der dekodierte Wert oder der ursprüngliche Wert, falls die Dekodierung fehlschlägt
-     */
-    public function decode_param_value($value) {
-        try {
-            // URL-sichere Dekodierung
-            $decoded = strtr($value, '-_,', '+/=');
-
-            // Base64-Entschlüsselung
-            $decoded = base64_decode($decoded);
-
-            if ($decoded === false) {
-                return $value; // Dekodierung fehlgeschlagen, Original zurückgeben
-            }
-
-            // Secret Key abtrennen
-            $secret_key = get_option('sessiontags_secret_key', '');
-            $parts = explode('|', $decoded);
-
-            if (count($parts) === 2 && $parts[1] === $secret_key) {
-                return $parts[0];
-            }
-
-            // Wenn der Secret Key nicht übereinstimmt, Original zurückgeben
-            return $value;
-        } catch (Exception $e) {
-            // Bei Fehlern Original zurückgeben
-            return $value;
-        }
-    }
-
-    /**
-     * Gibt den Wert eines bestimmten Parameters aus der Session zurück
-     *
-     * @param string $key Der Schlüssel des Parameters
-     * @param string $default Der Standardwert, falls der Parameter nicht existiert
-     * @return string Der Wert des Parameters oder der Standardwert
-     */
-    public function get_param($key, $default = '') {
-        if (isset($_SESSION[$this->session_key][$key])) {
-            return $_SESSION[$this->session_key][$key];
-        }
-        return $default;
-    }
-
-    /**
- * Gibt alle gespeicherten Parameter zurück
- *
- * @return array Die gespeicherten Parameter
- */
-  public function get_all_params() {
-      return isset($_SESSION[$this->session_key]) ? $_SESSION[$this->session_key] : [];
-  }
-
-  /**
-   * Gibt die zu verfolgenden Parameter zurück
-   *
-   * @return array Die zu verfolgenden Parameter
-   */
-  public function get_tracked_parameters() {
-      return get_option('sessiontags_parameters', ['quelle', 'kampagne', 'id']);
-  }
-}

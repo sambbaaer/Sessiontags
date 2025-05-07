@@ -1,11 +1,12 @@
 <?php
+
 /**
  * Plugin Name: SessionTags
- * Plugin URI: https://example.com/sessiontags
+ * Plugin URI: https://samuelbaer.ch/sessiontags
  * Description: Speichert vordefinierte URL-Parameter in der PHP-Session und stellt einen Shortcode für deren Ausgabe bereit.
- * Version: 1.1.0
- * Author: Entwickelt für WordPress
- * Author URI: https://example.com
+ * Version: 1.2.0
+ * Author: Samuel Baer mit Claude (KI)
+ * Author URI: https://samuelbaer.ch/
  * Text Domain: sessiontags
  * Domain Path: /languages
  * License: GPL-2.0+
@@ -20,12 +21,13 @@ if (!defined('ABSPATH')) {
 // Plugin-Pfad und URL definieren
 define('SESSIONTAGS_PATH', plugin_dir_path(__FILE__));
 define('SESSIONTAGS_URL', plugin_dir_url(__FILE__));
-define('SESSIONTAGS_VERSION', '1.1.0');
+define('SESSIONTAGS_VERSION', '1.2.0');
 
 /**
  * Hauptklasse des SessionTags-Plugins
  */
-class SessionTags {
+class SessionTags
+{
     /**
      * Instanz der Klasse (Singleton-Pattern)
      * 
@@ -73,7 +75,8 @@ class SessionTags {
      * 
      * Initialisiert die Plugin-Komponenten
      */
-    private function __construct() {
+    private function __construct()
+    {
         $this->init_components();
         $this->register_hooks();
     }
@@ -83,7 +86,8 @@ class SessionTags {
      * 
      * @return SessionTags
      */
-    public static function get_instance() {
+    public static function get_instance()
+    {
         if (self::$instance === null) {
             self::$instance = new self();
         }
@@ -93,7 +97,8 @@ class SessionTags {
     /**
      * Initialisiert die Komponenten des Plugins
      */
-    private function init_components() {
+    private function init_components()
+    {
         // Komponenten laden
         require_once SESSIONTAGS_PATH . 'includes/class-sessiontags-session-manager.php';
         require_once SESSIONTAGS_PATH . 'includes/class-sessiontags-shortcode-handler.php';
@@ -112,32 +117,94 @@ class SessionTags {
     /**
      * Registriert die erforderlichen WordPress-Hooks
      */
-    private function register_hooks() {
+    private function register_hooks()
+    {
         // Session starten und URL-Parameter verarbeiten beim Plugin-Start
         add_action('init', [$this->session_manager, 'init'], 1);
-        
+
         // Shortcode registrieren
         add_action('init', [$this->shortcode_handler, 'register_shortcodes'], 10);
-        
+
+        // AJAX-Handler für die Regenerierung des geheimen Schlüssels
+        add_action('wp_ajax_regenerate_secret_key', [$this, 'ajax_regenerate_secret_key']);
+
         // Plugin aktivieren
         register_activation_hook(__FILE__, [$this, 'activate']);
+
+        // Plugin deaktivieren
+        register_deactivation_hook(__FILE__, [$this, 'deactivate']);
     }
-    
+
     /**
      * Beim Aktivieren des Plugins Standardwerte setzen
      */
-    public function activate() {
+    public function activate()
+    {
         // Standard-Parameter setzen, falls noch nicht vorhanden
         if (!get_option('sessiontags_parameters')) {
-            update_option('sessiontags_parameters', ['quelle', 'kampagne', 'id']);
+            update_option('sessiontags_parameters', [
+                [
+                    'name' => 'quelle',
+                    'shortcode' => 'q',
+                    'fallback' => ''
+                ],
+                [
+                    'name' => 'kampagne',
+                    'shortcode' => 'k',
+                    'fallback' => ''
+                ],
+                [
+                    'name' => 'id',
+                    'shortcode' => 'i',
+                    'fallback' => ''
+                ]
+            ]);
         }
+
+        // Geheimen Schlüssel setzen, falls noch nicht vorhanden
+        if (!get_option('sessiontags_secret_key')) {
+            update_option('sessiontags_secret_key', wp_generate_password(32, true, true));
+        }
+    }
+
+    /**
+     * Beim Deaktivieren des Plugins
+     */
+    public function deactivate()
+    {
+        // Hier könnten Aufräumarbeiten stattfinden
+    }
+
+    /**
+     * AJAX-Handler für die Regenerierung des geheimen Schlüssels
+     */
+    public function ajax_regenerate_secret_key()
+    {
+        // Nonce prüfen
+        check_ajax_referer('regenerate_secret_key', 'nonce');
+
+        // Berechtigungen prüfen
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error(['message' => __('Keine Berechtigung!', 'sessiontags')]);
+            return;
+        }
+
+        // Neuen Schlüssel generieren
+        $new_key = wp_generate_password(32, true, true);
+
+        // Schlüssel speichern
+        update_option('sessiontags_secret_key', $new_key);
+
+        // Erfolg zurückgeben
+        wp_send_json_success($new_key);
     }
 }
 
 /**
  * Plugin initialisieren
  */
-function sessiontags_init() {
+function sessiontags_init()
+{
     SessionTags::get_instance();
 }
 add_action('plugins_loaded', 'sessiontags_init');
