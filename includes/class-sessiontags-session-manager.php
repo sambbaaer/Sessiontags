@@ -87,16 +87,65 @@ class SessionTagsSessionManager {
     }
 
     /**
-     * Kodiert einen Parameter-Wert
+     * Dekodiert einen Parameter-Wert
      *
-     * @param string $value Der Wert, der kodiert werden soll
-     * @return string Der kodierte Wert
+     * @param string $value Der kodierte Wert
+     * @return string Der dekodierte Wert
      */
-    public function encode_param_value($value) {
-        // Base64-Verschlüsselung mit zusätzlicher Sicherheit
-        $secret_key = get_option('sessiontags_secret_key', '');
-        $encoded = base64_encode($value . '|' . $secret_key);
+    public function decode_param_value($value)
+    {
+        // URL-sichere Dekodierung
+        $value = strtr($value, '-_,', '+/=');
 
-        // URL-sichere Kodierung
-        return strtr($encoded, '+/=', '-_,');
+        // Base64-Entschlüsselung
+        $decoded = base64_decode($value);
+
+        // Secret-Key-Teil entfernen
+        $secret_key = get_option('sessiontags_secret_key', '');
+        $parts = explode('|', $decoded);
+
+        if (count($parts) > 1 && end($parts) === $secret_key) {
+            array_pop($parts);
+            return implode('|', $parts);
+        }
+
+        return $decoded;
     }
+
+    /**
+     * Gibt einen gespeicherten Parameter zurück
+     *
+     * @param string $key Der Schlüssel des Parameters
+     * @param string $default Der Standardwert, falls der Parameter nicht existiert
+     * @return string Der Wert des Parameters oder der Standardwert
+     */
+    public function get_param($key, $default = '')
+    {
+        // Zuerst prüfen, ob ein individueller Fallback geliefert wurde
+        if (empty($default)) {
+            // Wenn nicht, den Standard-Fallback aus den Einstellungen verwenden
+            $parameters = $this->get_tracked_parameters();
+            foreach ($parameters as $param) {
+                if ($param['name'] === $key && isset($param['fallback'])) {
+                    $default = $param['fallback'];
+                    break;
+                }
+            }
+        }
+
+        // Parameter aus Session zurückgeben oder Fallback
+        return isset($_SESSION[$this->session_key][$key]) ? $_SESSION[$this->session_key][$key] : $default;
+    }
+
+    /**
+     * Gibt die zu verfolgenden Parameter zurück
+     *
+     * @return array Die zu verfolgenden Parameter
+     */
+    public function get_tracked_parameters()
+    {
+        return get_option('sessiontags_parameters', [
+            ['name' => 'quelle', 'shortcode' => 'q', 'fallback' => '']
+        ]);
+    }
+}
