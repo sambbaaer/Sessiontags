@@ -1,5 +1,5 @@
 /**
- * SessionTags Admin Styles
+ * SessionTags Admin Styles - Optimierte Feldbreiten
  */
 
 .sessiontags-admin {
@@ -23,10 +23,13 @@
     border-radius: 4px;
 }
 
+/* Tabelle auf volle Breite setzen */
 .sessiontags-admin .sessiontags-parameter-table {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 15px;
+    table-layout: fixed;
+    /* Wichtig für kontrollierte Spaltenbreiten */
 }
 
 .sessiontags-admin .sessiontags-parameter-table thead th {
@@ -43,16 +46,36 @@
     vertical-align: middle;
 }
 
-.sessiontags-admin .sessiontags-parameter-table .sessiontags-parameter-name {
-    width: 40%;
-}
-
-.sessiontags-admin .sessiontags-parameter-table .sessiontags-parameter-shortcode {
-    width: 15%;
-}
-
-.sessiontags-admin .sessiontags-parameter-table .sessiontags-parameter-fallback {
+/* Optimierte Spaltenbreiten */
+.sessiontags-admin .sessiontags-parameter-table th:nth-child(1),
+.sessiontags-admin .sessiontags-parameter-table td:nth-child(1) {
     width: 30%;
+    /* Parameter-Name */
+}
+
+.sessiontags-admin .sessiontags-parameter-table th:nth-child(2),
+.sessiontags-admin .sessiontags-parameter-table td:nth-child(2) {
+    width: 15%;
+    /* URL-Kurzform */
+}
+
+.sessiontags-admin .sessiontags-parameter-table th:nth-child(3),
+.sessiontags-admin .sessiontags-parameter-table td:nth-child(3) {
+    width: 40%;
+    /* Standard-Fallback */
+}
+
+.sessiontags-admin .sessiontags-parameter-table th:nth-child(4),
+.sessiontags-admin .sessiontags-parameter-table td:nth-child(4) {
+    width: 15%;
+    /* Aktionen */
+}
+
+/* Eingabefelder auf volle Breite der Zelle setzen */
+.sessiontags-admin .sessiontags-parameter-table input[type="text"] {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .sessiontags-admin .add-parameter {
@@ -120,6 +143,7 @@
     margin-left: 10px;
 }
 
+/* Geheimer Schlüssel Anzeige */
 .sessiontags-admin .secret-key-display {
     display: flex;
     align-items: center;
@@ -127,6 +151,7 @@
 }
 
 .sessiontags-admin .secret-key-display input {
+    flex: 1;
     margin-right: 10px;
     background-color: #f9f9f9;
 }
@@ -163,6 +188,7 @@
         border-bottom: 1px solid #eee;
         position: relative;
         padding-left: 50%;
+        min-height: 30px;
     }
 
     .sessiontags-admin .sessiontags-parameter-table td:before {
@@ -210,5 +236,6 @@
     .sessiontags-admin .secret-key-display input {
         margin-right: 0;
         margin-bottom: 10px;
+        width: 100%;
     }
 }

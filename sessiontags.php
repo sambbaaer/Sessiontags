@@ -97,6 +97,8 @@ class SessionTags
     /**
      * Initialisiert die Komponenten des Plugins
      */
+     * Initialisiert die Komponenten des Plugins
+    */
     private function init_components()
     {
         // Komponenten laden
@@ -104,6 +106,7 @@ class SessionTags
         require_once SESSIONTAGS_PATH . 'includes/class-sessiontags-shortcode-handler.php';
         require_once SESSIONTAGS_PATH . 'admin/class-sessiontags-admin.php';
         require_once SESSIONTAGS_PATH . 'includes/class-sessiontags-elementor.php';
+        require_once SESSIONTAGS_PATH . 'includes/class-sessiontags-avada.php';
         require_once SESSIONTAGS_PATH . 'includes/class-sessiontags-url-helper.php';
 
         // Instanzen erstellen
@@ -111,6 +114,7 @@ class SessionTags
         $this->shortcode_handler = new SessionTagsShortcodeHandler($this->session_manager);
         $this->admin = new SessionTagsAdmin($this->session_manager);
         $this->elementor = new SessionTagsElementor($this->session_manager);
+        $this->avada = new SessionTagsAvada($this->session_manager);
         $this->url_helper = new SessionTagsUrlHelper($this->session_manager);
     }
 
