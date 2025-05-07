@@ -2,8 +2,8 @@
 
 /**
  * Plugin Name: SessionTags
- * Plugin URI: https://samuelbaer.ch/sessiontags
- * Description: Speichert vordefinierte URL-Parameter in der PHP-Session und stellt einen Shortcode für deren Ausgabe bereit.
+ * Plugin URI: https://github.com/sambbaaer/Sessiontags
+ * Description: Erfasst und speichert URL-Parameter in der PHP-Session für personalisierte Website-Erlebnisse. Bietet Shortcodes, Elementor-Integration, Avada-Unterstützung sowie URL-Verschleierung für optimiertes Kampagnen-Tracking.
  * Version: 1.2.0
  * Author: Samuel Baer mit Claude (KI)
  * Author URI: https://samuelbaer.ch/
