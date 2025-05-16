@@ -97,8 +97,6 @@ class SessionTags
     /**
      * Initialisiert die Komponenten des Plugins
      */
-     * Initialisiert die Komponenten des Plugins
-    */
     private function init_components()
     {
         // Komponenten laden
