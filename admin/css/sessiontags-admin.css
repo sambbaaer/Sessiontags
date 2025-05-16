@@ -1,167 +1,149 @@
-/**
- * SessionTags Admin Styles - Optimierte Feldbreiten
- */
-
-.sessiontags-admin {
-    max-width: 1200px;
-    margin: 0 auto;
+break: break-all;
 }
 
-.sessiontags-admin .sessiontags-description {
-    background-color: #f8f8f8;
-    border-left: 4px solid #007cba;
-    padding: 12px 15px;
+.sessiontags-doc-example {
+    margin: 20px 0;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border: 1px solid #eee;
+    border-radius: 4px;
+}
+
+.sessiontags-doc-example h4 {
+    margin-top: 0;
+    color: #333;
+    font-size: 1.1em;
+}
+
+.sessiontags-doc-example code {
+    display: block;
+    padding: 10px;
+    margin: 10px 0;
+    background-color: #f1f1f1;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    font-family: monospace;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
+.sessiontags-doc-note {
+    background-color: #fff8e5;
+    border-left: 4px solid #ffb900;
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 0 3px 3px 0;
+}
+
+.sessiontags-doc-steps {
     margin: 20px 0;
 }
 
-.sessiontags-admin .sessiontags-parameters,
-.sessiontags-admin .sessiontags-encoding-settings {
-    margin-bottom: 30px;
-    background-color: #fff;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
-
-/* Tabelle auf volle Breite setzen */
-.sessiontags-admin .sessiontags-parameter-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 15px;
-    table-layout: fixed;
-    /* Wichtig für kontrollierte Spaltenbreiten */
-}
-
-.sessiontags-admin .sessiontags-parameter-table thead th {
-    background-color: #f5f5f5;
-    padding: 10px;
-    text-align: left;
-    font-weight: bold;
-    border-bottom: 1px solid #ddd;
-}
-
-.sessiontags-admin .sessiontags-parameter-table tbody td {
-    padding: 10px;
-    border-bottom: 1px solid #eee;
-    vertical-align: middle;
-}
-
-/* Optimierte Spaltenbreiten */
-.sessiontags-admin .sessiontags-parameter-table th:nth-child(1),
-.sessiontags-admin .sessiontags-parameter-table td:nth-child(1) {
-    width: 30%;
-    /* Parameter-Name */
-}
-
-.sessiontags-admin .sessiontags-parameter-table th:nth-child(2),
-.sessiontags-admin .sessiontags-parameter-table td:nth-child(2) {
-    width: 15%;
-    /* URL-Kurzform */
-}
-
-.sessiontags-admin .sessiontags-parameter-table th:nth-child(3),
-.sessiontags-admin .sessiontags-parameter-table td:nth-child(3) {
-    width: 40%;
-    /* Standard-Fallback */
-}
-
-.sessiontags-admin .sessiontags-parameter-table th:nth-child(4),
-.sessiontags-admin .sessiontags-parameter-table td:nth-child(4) {
-    width: 15%;
-    /* Aktionen */
-}
-
-/* Eingabefelder auf volle Breite der Zelle setzen */
-.sessiontags-admin .sessiontags-parameter-table input[type="text"] {
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
-}
-
-.sessiontags-admin .add-parameter {
-    margin-top: 10px;
-}
-
-.sessiontags-admin .sessiontags-example-url,
-.sessiontags-admin .sessiontags-usage {
-    margin-bottom: 30px;
-    padding: 20px;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
-
-.sessiontags-admin .sessiontags-example-url-display {
-    display: flex;
-    align-items: center;
-    margin: 15px 0;
-}
-
-.sessiontags-admin .sessiontags-example-url-display code {
-    flex: 1;
-    padding: 10px;
-    margin-right: 10px;
-    background-color: #f5f5f5;
-    border: 1px solid #ddd;
-    border-radius: 3px;
-    word-break: break-all;
-    font-size: 13px;
-}
-
-.sessiontags-admin .sessiontags-usage-section {
-    margin-bottom: 25px;
-}
-
-.sessiontags-admin .sessiontags-usage-section h3 {
-    margin-top: 0;
-    padding-bottom: 5px;
-    border-bottom: 1px solid #eee;
-}
-
-.sessiontags-admin .sessiontags-usage-section h4 {
-    margin-top: 15px;
-    margin-bottom: 5px;
-}
-
-.sessiontags-admin .sessiontags-usage-section code {
-    background-color: #f5f5f5;
-    padding: 3px 5px;
-    border-radius: 3px;
-}
-
-.sessiontags-admin .sessiontags-usage-section ul {
-    margin-left: 20px;
-    list-style-type: disc;
-}
-
-.sessiontags-admin .sessiontags-usage-section ol {
-    margin-left: 20px;
-    list-style-type: decimal;
-}
-
-.sessiontags-admin .remove-parameter {
-    margin-left: 10px;
-}
-
-/* Geheimer Schlüssel Anzeige */
-.sessiontags-admin .secret-key-display {
-    display: flex;
-    align-items: center;
+.sessiontags-doc-steps h4 {
     margin-bottom: 10px;
 }
 
-.sessiontags-admin .secret-key-display input {
-    flex: 1;
-    margin-right: 10px;
+.sessiontags-doc-steps ol {
+    margin-left: 25px;
+    list-style-type: decimal;
+}
+
+.sessiontags-doc-steps li {
+    margin-bottom: 8px;
+}
+
+.sessiontags-doc-steps .tip {
+    font-style: italic;
+    color: #666;
+    margin-top: 10px;
+}
+
+.sessiontags-doc-tips {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -10px;
+}
+
+.sessiontags-doc-tip {
+    flex: 1 1 30%;
+    min-width: 250px;
+    margin: 0 10px 20px;
+    padding: 15px;
+    background-color: #f0f7fb;
+    border-left: 4px solid #0073aa;
+    border-radius: 0 3px 3px 0;
+}
+
+.sessiontags-doc-tip h4 {
+    margin-top: 0;
+    color: #0073aa;
+}
+
+.sessiontags-doc-cards {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -10px;
+}
+
+.sessiontags-doc-cards .sessiontags-doc-card {
+    flex: 1 1 30%;
+    min-width: 250px;
+    margin: 0 10px 20px;
+}
+
+.sessiontags-doc-faq-item {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.sessiontags-doc-faq-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.sessiontags-doc-faq-item h4 {
+    margin-bottom: 10px;
+    color: #23282d;
+}
+
+.sessiontags-doc-example-card {
+    margin-bottom: 20px;
+    padding: 15px;
     background-color: #f9f9f9;
+    border: 1px solid #eee;
+    border-radius: 4px;
 }
 
-.sessiontags-admin .regenerate-key {
-    white-space: nowrap;
+.sessiontags-doc-example-card h4 {
+    margin-top: 0;
+    color: #333;
+    font-size: 1.1em;
 }
 
-/* Responsives Design für kleinere Bildschirme */
+.sessiontags-doc-example-card code {
+    display: block;
+    padding: 8px;
+    margin: 10px 0;
+    background-color: #f1f1f1;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    font-family: monospace;
+}
+
+/* Responsive Styles */
 @media screen and (max-width: 782px) {
+
+    .sessiontags-doc-cards,
+    .sessiontags-doc-tips {
+        flex-direction: column;
+    }
+
+    .sessiontags-doc-card,
+    .sessiontags-doc-tip {
+        flex: 1 1 100%;
+        margin-bottom: 15px;
+    }
 
     .sessiontags-admin .sessiontags-parameter-table,
     .sessiontags-admin .sessiontags-parameter-table thead,

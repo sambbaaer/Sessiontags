@@ -106,6 +106,7 @@ class SessionTags
         require_once SESSIONTAGS_PATH . 'includes/class-sessiontags-elementor.php';
         require_once SESSIONTAGS_PATH . 'includes/class-sessiontags-avada.php';
         require_once SESSIONTAGS_PATH . 'includes/class-sessiontags-url-helper.php';
+        require_once SESSIONTAGS_PATH . 'includes/class-sessiontags-form-integration.php';
 
         // Instanzen erstellen
         $this->session_manager = new SessionTagsSessionManager();

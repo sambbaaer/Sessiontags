@@ -148,4 +148,21 @@ class SessionTagsSessionManager {
             ['name' => 'quelle', 'shortcode' => 'q', 'fallback' => '']
         ]);
     }
+
+    public function encode_param_value($value)
+    {
+        // Secret Key holen
+        $secret_key = get_option('sessiontags_secret_key', '');
+
+        // Wert mit Secret Key kombinieren
+        $encoded = $value . '|' . $secret_key;
+
+        // Base64-Verschlüsselung
+        $encoded = base64_encode($encoded);
+
+        // URL-sichere Kodierung
+        $encoded = strtr($encoded, '+/=', '-_,');
+
+        return $encoded;
+    }
 }
