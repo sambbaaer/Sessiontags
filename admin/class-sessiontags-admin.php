@@ -325,6 +325,10 @@ class SessionTagsAdmin
                         </div>
                     </div>
 
+                    <?php echo '<p>&nbsp;</p>'; ?>
+                    <?php echo '<hr>'; ?>
+                    <?php echo '<p>&nbsp;</p>'; ?>
+
                     <div class="sessiontags-doc-section">
                         <h3><?php echo esc_html__('Verwendungsbeispiele', 'sessiontags'); ?></h3>
 
@@ -465,16 +469,16 @@ class SessionTagsAdmin
                             <h4><?php echo esc_html__('Wichtig:', 'sessiontags'); ?></h4>
                             <p><?php echo esc_html__('Bei Microsoft Forms können die Feldnamen je nach Formular unterschiedlich sein. Die Namen entsprechen oft dem Feldtyp (z.B. "name", "email", "r1q1" oder "question1").', 'sessiontags'); ?></p>
                             <p><?php echo esc_html__('Wenn die form_params und params identisch sind, kannst du form_params weglassen:', 'sessiontags'); ?></p>
-                            <code>[st_form type="microsoft" url="https://forms.office.com/Pages/ResponsePage.aspx?id=YOUR_FORM_ID" params="name,email"]</code>
-                            >
-                            <code>[st_form
-                                type="google"
-                                url="https://docs.google.com/forms/d/e/xxxxxxxxxxxxxxxxx/viewform"
-                                params="name,email"
-                                form_params="entry.1234567890,entry.2345678901"
-                                width="100%"
-                                height="600px"
-                                ]</code>
+                            <?php echo '<p>&nbsp;</p>'; ?>
+<pre><code>
+[st_form
+type="google"
+url="https://docs.google.com/forms/d/e/xxxxxxxxxxxxxxxxx/viewform"
+params="name,email"
+form_params="entry.1234567890,entry.2345678901"
+width="100%"
+height="600px"
+]</code></pre>
                             <p><?php echo esc_html__('Dieses Beispiel bettet ein Google-Formular ein und überträgt den Wert des Session-Parameters "name" in das Formularfeld "entry.1234567890" und den Wert von "email" in das Feld "entry.2345678901".', 'sessiontags'); ?></p>
                         </div>
                     </div>
@@ -509,14 +513,15 @@ class SessionTagsAdmin
 
                         <div class="sessiontags-doc-example">
                             <h4><?php echo esc_html__('Beispiel:', 'sessiontags'); ?></h4>
-                            <code>[st_form
-                                type="microsoft"
-                                url="https://forms.office.com/Pages/ResponsePage.aspx?id=YOUR_FORM_ID"
-                                params="name,email"
-                                form_params="name,email"
-                                width="100%"
-                                height="600px"
-                                ]</code>
+                            <pre><code>
+[st_form
+type="microsoft"
+url="https://forms.office.com/Pages/ResponsePage.aspx?id=YOUR_FORM_ID"
+params="name,email"
+form_params="name,email"
+width="100%"
+height="600px"
+]</code></pre>
                             <p><?php echo esc_html__('Dieses Beispiel bettet ein Microsoft-Formular ein und überträgt den Wert des Session-Parameters "name" in das Formularfeld "name" und den Wert von "email" in das Feld "email".', 'sessiontags'); ?></p>
                         </div>
 
@@ -610,6 +615,10 @@ class SessionTagsAdmin
                             </ol>
                         </div>
                     </div>
+
+                    <?php echo '<p>&nbsp;</p>'; ?>
+                    <?php echo '<hr>'; ?>
+                    <?php echo '<p>&nbsp;</p>'; ?>
 
                     <div class="sessiontags-doc-section">
                         <h3><?php echo esc_html__('Häufig gestellte Fragen', 'sessiontags'); ?></h3>

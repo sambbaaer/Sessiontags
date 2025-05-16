@@ -3,8 +3,8 @@
 /**
  * Plugin Name: SessionTags
  * Plugin URI: https://github.com/sambbaaer/Sessiontags
- * Description: Erfasst und speichert URL-Parameter in der PHP-Session für personalisierte Website-Erlebnisse. Bietet Shortcodes, Elementor-Integration, Avada-Unterstützung sowie URL-Verschleierung für optimiertes Kampagnen-Tracking.
- * Version: 1.2.0
+ * Description: Erfasst und speichert URL-Parameter in der PHP-Session für personalisierte Website-Erlebnisse. Bietet vielseitige Shortcodes, Elementor Dynamic Tags, Avada Fusion Builder Integration sowie URL-Verschleierung für optimiertes Kampagnen-Tracking. Unterstützt kurze Parameter-Namen, individuelle Fallback-Werte, Google Forms & Microsoft Forms Integration, URL-Generator für Parameter-Weitergabe und verschlüsselte URLs für erhöhte Sicherheit. Einfache Konfiguration über das WordPress-Dashboard.
+ * Version: 1.4.6
  * Author: Samuel Baer mit Claude (KI)
  * Author URI: https://samuelbaer.ch/
  * Text Domain: sessiontags
@@ -71,6 +71,13 @@ class SessionTags
     private $url_helper;
 
     /**
+     * Instanz der FormIntegration-Klasse
+     * 
+     * @var SessionTagsFormIntegration
+     */
+    private $form_integration;
+
+    /**
      * Konstruktor der SessionTags-Klasse
      * 
      * Initialisiert die Plugin-Komponenten
@@ -115,6 +122,7 @@ class SessionTags
         $this->elementor = new SessionTagsElementor($this->session_manager);
         $this->avada = new SessionTagsAvada($this->session_manager);
         $this->url_helper = new SessionTagsUrlHelper($this->session_manager);
+        $this->form_integration = new SessionTagsFormIntegration($this->session_manager);
     }
 
     /**
@@ -127,6 +135,9 @@ class SessionTags
 
         // Shortcode registrieren
         add_action('init', [$this->shortcode_handler, 'register_shortcodes'], 10);
+
+        // Formular-Integration Shortcodes registrieren
+        add_action('init', [$this->form_integration, 'register_shortcodes'], 10);
 
         // AJAX-Handler für die Regenerierung des geheimen Schlüssels
         add_action('wp_ajax_regenerate_secret_key', [$this, 'ajax_regenerate_secret_key']);
