@@ -3,7 +3,8 @@
  */
 jQuery(document).ready(function($) {
     // Parameter hinzufügen
-    $('.add-parameter').on('click', function() {
+    // Parameter hinzufügen
+    $('.add-parameter').on('click', function () {
         var index = $('#sessiontags-parameter-rows tr').length;
         var newRow = '<tr class="parameter-row">' +
             '<td>' +
@@ -27,17 +28,23 @@ jQuery(document).ready(function($) {
             '<input type="text" ' +
             'name="sessiontags_parameters[' + index + '][fallback]" ' +
             'value="" ' +
-            'class="regular-text sessiontags-parameter-fallback" ' +
+            'class="sessiontags-parameter-fallback" ' +
             'placeholder="Standard-Fallback"' +
             '>' +
             '</td>' +
             '<td>' +
-            '<button type="button" class="button remove-parameter">' +
-            'Entfernen' +
-            '</button>' +
+            '<input type="text" ' +
+            'name="sessiontags_parameters[' + index + '][redirect_url]" ' +
+            'value="" ' +
+            'class="regular-text sessiontags-parameter-redirect-url" ' +
+            'placeholder="https://theuselessweb.com/"' +
+            '>' +
+            '</td>' +
+            '<td>' +
+            '<span class="dashicons dashicons-trash trash-icon remove-parameter"></span>' +
             '</td>' +
             '</tr>';
-        
+
         $('#sessiontags-parameter-rows').append(newRow);
         updateExampleUrl();
     });

@@ -408,4 +408,43 @@
         margin-bottom: 10px;
         width: 100%;
     }
+
+    /* Anpassung der Spaltenbreiten in der Parameter-Tabelle */
+    .sessiontags-parameter-table th:nth-child(1) {
+        width: 25%;
+    }
+
+    .sessiontags-parameter-table th:nth-child(2) {
+        width: 15%;
+    }
+
+    .sessiontags-parameter-table th:nth-child(3) {
+        width: 20%;
+        /* Reduzierte Breite für Standard-Fallback */
+    }
+
+    .sessiontags-parameter-table th:nth-child(4) {
+        width: 30%;
+    }
+
+    .sessiontags-parameter-table th:nth-child(5) {
+        width: 10%;
+    }
+
+    /* Stil für das Papierkorb-Icon */
+    .trash-icon {
+        color: #cc0000;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .trash-icon:hover {
+        color: #990000;
+    }
+
+    /* Reduzierte Breite für das Fallback-Eingabefeld */
+    .sessiontags-parameter-fallback {
+        width: 85%;
+    }
+
 }

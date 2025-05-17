@@ -22,7 +22,8 @@ class SessionTagsSessionManager {
     /**
      * Initialisiert die Session und verarbeitet die URL-Parameter
      */
-    public function init() {
+    public function init()
+    {
         // Session nur starten, wenn noch keine existiert
         if (!session_id() && !headers_sent()) {
             session_start();
@@ -35,6 +36,9 @@ class SessionTagsSessionManager {
 
         // URL-Parameter prüfen und in Session speichern
         $this->process_url_parameters();
+
+        // Auf notwendige Weiterleitungen prüfen
+        $this->check_and_perform_redirects();
     }
 
     /**
@@ -209,27 +213,5 @@ class SessionTagsSessionManager {
                 }
             }
         }
-    }
-    
-    /**
-     * Initialisiert die Session und verarbeitet die URL-Parameter
-     */
-    public function init()
-    {
-        // Session nur starten, wenn noch keine existiert
-        if (!session_id() && !headers_sent()) {
-            session_start();
-        }
-
-        // Session-Array initialisieren, falls es noch nicht existiert
-        if (!isset($_SESSION[$this->session_key]) || !is_array($_SESSION[$this->session_key])) {
-            $_SESSION[$this->session_key] = [];
-        }
-
-        // URL-Parameter prüfen und in Session speichern
-        $this->process_url_parameters();
-
-        // Auf notwendige Weiterleitungen prüfen
-        $this->check_and_perform_redirects();
     }
 }

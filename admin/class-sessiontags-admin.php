@@ -81,6 +81,9 @@ class SessionTagsAdmin
             SESSIONTAGS_VERSION
         );
 
+        // Dashicons für den Papierkorb
+        wp_enqueue_style('dashicons');
+
         // Admin-JavaScript laden
         wp_enqueue_script(
             'sessiontags-admin-script',
@@ -190,9 +193,9 @@ class SessionTagsAdmin
                                                     placeholder="<?php echo esc_attr__('https://theuselessweb.com/', 'sessiontags'); ?>">
                                             </td>
                                             <td>
-                                                <button type="button" class="button remove-parameter" <?php echo (count($parameters) <= 1) ? 'style="display:none;"' : ''; ?>>
-                                                    <?php echo esc_html__('Entfernen', 'sessiontags'); ?>
-                                                </button>
+                                            <td>
+                                                <span class="dashicons dashicons-trash trash-icon remove-parameter" <?php echo (count($parameters) <= 1) ? 'style="display:none;"' : ''; ?>></span>
+                                            </td>
                                             </td>
                                         </tr>
                                     <?php endforeach; ?>
