@@ -45,6 +45,28 @@
     border-bottom: 1px solid #e1e1e1;
 }
 
+/* Anpassung der Spaltenbreiten in der Parameter-Tabelle */
+.sessiontags-parameter-table th:nth-child(1) {
+    width: 25%;
+}
+
+.sessiontags-parameter-table th:nth-child(2) {
+    width: 15%;
+}
+
+.sessiontags-parameter-table th:nth-child(3) {
+    width: 20%;
+    /* Reduzierte Breite für Standard-Fallback */
+}
+
+.sessiontags-parameter-table th:nth-child(4) {
+    width: 30%;
+}
+
+.sessiontags-parameter-table th:nth-child(5) {
+    width: 10%;
+}
+
 .sessiontags-parameter-table td {
     padding: 10px;
     vertical-align: middle;
@@ -57,6 +79,25 @@
 
 .sessiontags-parameter-actions {
     margin: 15px 0;
+}
+
+/* Stil für das Papierkorb-Icon */
+.trash-icon {
+    color: #cc0000;
+    cursor: pointer;
+    font-size: 16px;
+    display: inline-block;
+    line-height: 1;
+    text-align: center;
+}
+
+.trash-icon:hover {
+    color: #990000;
+}
+
+/* Reduzierte Breite für das Fallback-Eingabefeld */
+.sessiontags-parameter-fallback {
+    width: 85%;
 }
 
 /* ---- Beispiel-URL Display ---- */
@@ -385,6 +426,10 @@
     }
 
     .sessiontags-admin .sessiontags-parameter-table td:nth-of-type(4):before {
+        content: "Weiterleitung";
+    }
+
+    .sessiontags-admin .sessiontags-parameter-table td:nth-of-type(5):before {
         content: "Aktionen";
     }
 
@@ -408,43 +453,4 @@
         margin-bottom: 10px;
         width: 100%;
     }
-
-    /* Anpassung der Spaltenbreiten in der Parameter-Tabelle */
-    .sessiontags-parameter-table th:nth-child(1) {
-        width: 25%;
-    }
-
-    .sessiontags-parameter-table th:nth-child(2) {
-        width: 15%;
-    }
-
-    .sessiontags-parameter-table th:nth-child(3) {
-        width: 20%;
-        /* Reduzierte Breite für Standard-Fallback */
-    }
-
-    .sessiontags-parameter-table th:nth-child(4) {
-        width: 30%;
-    }
-
-    .sessiontags-parameter-table th:nth-child(5) {
-        width: 10%;
-    }
-
-    /* Stil für das Papierkorb-Icon */
-    .trash-icon {
-        color: #cc0000;
-        cursor: pointer;
-        font-size: 16px;
-    }
-
-    .trash-icon:hover {
-        color: #990000;
-    }
-
-    /* Reduzierte Breite für das Fallback-Eingabefeld */
-    .sessiontags-parameter-fallback {
-        width: 85%;
-    }
-
 }

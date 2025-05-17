@@ -192,11 +192,11 @@ class SessionTagsAdmin
                                                     class="regular-text sessiontags-parameter-redirect-url"
                                                     placeholder="<?php echo esc_attr__('https://theuselessweb.com/', 'sessiontags'); ?>">
                                             </td>
-                                            <td>
+
                                             <td>
                                                 <span class="dashicons dashicons-trash trash-icon remove-parameter" <?php echo (count($parameters) <= 1) ? 'style="display:none;"' : ''; ?>></span>
                                             </td>
-                                            </td>
+
                                         </tr>
                                     <?php endforeach; ?>
                                 <?php else : ?>
@@ -231,9 +231,7 @@ class SessionTagsAdmin
                                                 placeholder="<?php echo esc_attr__('https://theuselessweb.com/', 'sessiontags'); ?>">
                                         </td>
                                         <td>
-                                            <button type="button" class="button remove-parameter" style="display:none;">
-                                                <?php echo esc_html__('Entfernen', 'sessiontags'); ?>
-                                            </button>
+                                            <span class="dashicons dashicons-trash trash-icon remove-parameter" <?php echo (count($parameters) <= 1) ? 'style="display:none;"' : ''; ?>></span>
                                         </td>
                                     </tr>
                                 <?php endif; ?>
