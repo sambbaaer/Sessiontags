@@ -84,10 +84,9 @@ class SessionTagsAdmin
         // Dashicons für den Papierkorb
         wp_enqueue_style('dashicons');
 
-        // Admin-JavaScript laden
         wp_enqueue_script(
             'sessiontags-admin-script',
-            SESSIONTAGS_URL . 'admin/js/sessiontags-admin.js',
+            SESSIONTAGS_URL . 'admin/admin-js.js',
             ['jquery'],
             SESSIONTAGS_VERSION,
             true

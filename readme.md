@@ -1,109 +1,141 @@
-=== SessionTags ===
-Contributors: example-author
-Tags: session, url, parameter, shortcode, elementor
-Requires at least: 5.0
-Tested up to: 6.4
-Stable tag: 1.2.0
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+# SessionTags 🏷️
 
-SessionTags speichert URL-Parameter in der PHP-Session und stellt Shortcodes für deren Ausgabe bereit, mit Unterstützung für URL-Kürzung und -Verschleierung.
+## WordPress URL Parameter Tracking Plugin
 
-== Beschreibung ==
+SessionTags captures URL parameters and stores them in PHP sessions for personalized website experiences. Create dynamic content based on referral sources, campaigns, and user preferences.
 
-SessionTags ist ein WordPress-Plugin, das URL-Parameter erkennt, deren Werte für die Dauer der aktuellen Benutzersitzung in der PHP-Session speichert und verschiedene Möglichkeiten zur Ausgabe dieser gespeicherten Werte anbietet.
+🔗 **Download the plugin: [samuelbaer.ch/sessiontags](https://samuelbaer.ch/sessiontags)**
 
-==== SessionTags ===
-Contributors: example-author
-Tags: session, url, parameter, shortcode
-Requires at least: 5.0
-Tested up to: 6.4
-Stable tag: 1.0.0
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+## Features ✨
 
-SessionTags speichert vordefinierte URL-Parameter in der PHP-Session und stellt einen Shortcode für deren Ausgabe bereit.
+- 🔌 **Easy Integration**: Use shortcodes, Elementor dynamic tags, or Avada Fusion Builder elements
+- 🔐 **URL Encoding**: Optional parameter encryption for improved security and reduced readability
+- 📝 **Form Integration**: Pre-fill Google & Microsoft Forms with your session parameters
+- 🔄 **URL Generator**: Create links that automatically pass your parameters to other pages
+- 📱 **Short Parameters**: Configure abbreviated parameter names for cleaner URLs
+- ↪️ **Redirection**: Set up automatic redirects based on specific parameters
 
-== Beschreibung ==
+## Installation 🚀
 
-SessionTags ist ein WordPress-Plugin, das URL-Parameter erkennt, deren Werte für die Dauer der aktuellen Benutzersitzung in der PHP-Session speichert und einen Shortcode bereitstellt, um diese gespeicherten Werte auf der Website auszugeben.
+1. Download the plugin from [samuelbaer.ch/sessiontags](https://samuelbaer.ch/sessiontags)
+2. Upload to your WordPress site through the admin panel (Plugins > Add New > Upload Plugin)
+3. Activate the plugin
+4. Configure your parameters under Settings > SessionTags
 
-= Hauptfunktionen =
+## Usage 💡
 
-* Erfassung bestimmter URL-Parameter beim Seitenaufruf
-* Speicherung der Parameter in der PHP-Session für die Dauer der Browsersitzung
-* Ausgabe der gespeicherten Parameter über einen einfachen Shortcode
-
-= Anwendungsbeispiele =
-
-* Tracking von Herkunftskampagnen
-* Personalisierung von Inhalten basierend auf URL-Parametern
-* Speicherung von Benutzereinstellungen über mehrere Seiten hinweg
-
-== Installation ==
-
-1. Laden Sie die Plugin-Dateien hoch und entpacken Sie sie in das Verzeichnis `/wp-content/plugins/sessiontags/`.
-2. Aktivieren Sie das Plugin über das Menü 'Plugins' in WordPress.
-3. Konfigurieren Sie die zu verfolgenden URL-Parameter im Hauptcode des Plugins (standardmässig: 'quelle', 'kampagne', 'id').
-
-== Verwendung ==
-
-= Konfiguration der zu verfolgenden Parameter =
-
-Standardmässig werden die Parameter 'quelle', 'kampagne' und 'id' verfolgt. Um diese anzupassen, bearbeiten Sie die Hauptdatei des Plugins (`sessiontags.php`) und ändern Sie das Array `$tracked_params`:
-
-```php
-private $tracked_params = ['quelle', 'kampagne', 'id'];
-```
-
-= Verwendung des Shortcodes =
-
-Es stehen zwei Shortcode-Varianten zur Verfügung:
-
-**Kurzer Shortcode (empfohlen):**
-```
-[st k="parameter_name" d="standardwert"]
-```
-
-**Vollständiger Shortcode:**
-```
-[show_session_param key="parameter_name" default="standardwert"]
-```
-
-Beide Varianten sind funktional identisch, der kurze Shortcode ist jedoch einfacher einzugeben. Parameter:
-
-* `k` oder `key`: Der Name des URL-Parameters (erforderlich)
-* `d` oder `default`: Ein optionaler Standardwert, der angezeigt wird, wenn der Parameter nicht in der Session gespeichert ist
-
-Beispiele:
+### Basic Parameter Display
 
 ```
-[st k="quelle"]
-[st k="kampagne" d="standard-kampagne"]
+[st k="source" d="direct"]
 ```
 
-Dies würde folgendes ausgeben:
+Or use the longer version:
 
 ```
-newsletter
-standard-kampagne (falls "kampagne" nicht in der Session vorhanden ist)
+[show_session_param key="source" default="direct"]
 ```
 
-== Häufig gestellte Fragen ==
+### Link Generation with Parameters
 
-= Wie lange bleiben die Parameter gespeichert? =
+```
+[st_url url="https://example.com/landing/" params="source=[st k=source],campaign=[st k=campaign]"]Click here[/st_url]
+```
 
-Die Parameter bleiben für die Dauer der PHP-Session gespeichert. Das bedeutet typischerweise, bis der Benutzer den Browser schliesst oder eine bestimmte Zeit der Inaktivität erreicht ist (abhängig von der PHP-Konfiguration des Servers).
+### Elementor Integration
 
-= Kann ich die Parameter auch in einer Datenbank speichern? =
+1. Edit any Elementor text widget
+2. Click the dynamic content icon
+3. Select "SessionTags" from the dropdown
+4. Choose your parameter and optional fallback value
 
-Dies ist in der aktuellen Version nicht vorgesehen, da das Plugin absichtlich leichtgewichtig gehalten wurde. Für eine dauerhafte Speicherung empfehlen wir die Verwendung von Cookies oder eine Erweiterung des Plugins.
+### Form Integration
 
-= Ist das Plugin DSGVO-konform? =
+```
+[st_form type="google" url="https://docs.google.com/forms/d/e/YOUR_FORM_ID/viewform" params="name,email" form_params="entry.1234567890,entry.2345678901"]
+```
 
-Das Plugin selbst speichert Daten nur in der PHP-Session des Benutzers und nicht dauerhaft. Dennoch sollten Sie Ihre Datenschutzerklärung entsprechend anpassen, wenn Sie personenbezogene Daten in URL-Parametern übertragen und speichern.
+## Documentation 📖
 
-== Changelog ==
+Full documentation is available in the WordPress admin under Settings > SessionTags > Documentation.
 
-= 1.0.0 =
-* Erstveröffentlichung
+## Compatibility 🔄
+
+- WordPress 5.0+
+- PHP 7.2+
+- Elementor (optional)
+- Avada Fusion Builder (optional)
+
+## License 📜
+
+GPLv2 or later
+
+---
+
+# SessionTags 🏷️
+
+## WordPress URL-Parameter-Tracking Plugin
+
+SessionTags erfasst URL-Parameter und speichert sie in PHP-Sessions für personalisierte Website-Erlebnisse. Erstelle dynamische Inhalte basierend auf Verweisquellen, Kampagnen und Benutzereinstellungen.
+
+🔗 **Plugin herunterladen: [samuelbaer.ch/sessiontags](https://samuelbaer.ch/sessiontags)**
+
+## Funktionen ✨
+
+- 🔌 **Einfache Integration**: Verwende Shortcodes, Elementor Dynamic Tags oder Avada Fusion Builder Elemente
+- 🔐 **URL-Verschleierung**: Optionale Parameter-Verschlüsselung für verbesserte Sicherheit und reduzierte Lesbarkeit
+- 📝 **Formular-Integration**: Fülle Google & Microsoft Forms automatisch mit deinen Session-Parametern aus
+- 🔄 **URL-Generator**: Erstelle Links, die deine Parameter automatisch an andere Seiten weitergeben
+- 📱 **Kurze Parameter**: Konfiguriere abgekürzte Parameter-Namen für übersichtlichere URLs
+- ↪️ **Weiterleitung**: Richte automatische Weiterleitungen basierend auf bestimmten Parametern ein
+
+## Installation 🚀
+
+1. Lade das Plugin von [samuelbaer.ch/sessiontags](https://samuelbaer.ch/sessiontags) herunter
+2. Lade es über das Admin-Panel auf deine WordPress-Seite hoch (Plugins > Neu hinzufügen > Plugin hochladen)
+3. Aktiviere das Plugin
+4. Konfiguriere deine Parameter unter Einstellungen > SessionTags
+
+## Verwendung 💡
+
+### Einfache Parameter-Anzeige
+
+```
+[st k="quelle" d="direkt"]
+```
+
+Oder verwende die längere Version:
+
+```
+[show_session_param key="quelle" default="direkt"]
+```
+
+### Link-Generierung mit Parametern
+
+```
+[st_url url="https://beispiel.de/landingpage/" params="quelle=[st k=quelle],kampagne=[st k=kampagne]"]Hier klicken[/st_url]
+```
+
+### Elementor-Integration
+
+1. Bearbeite ein beliebiges Elementor-Textwidget
+2. Klicke auf das Dynamic-Content-Symbol
+3. Wähle "SessionTags" aus dem Dropdown-Menü
+4. Wähle deinen Parameter und einen optionalen Fallback-Wert
+
+### Formular-Integration
+
+```
+[st_form type="google" url="https://docs.google.com/forms/d/e/DEINE_FORMULAR_ID/viewform" params="name,email" form_params="entry.1234567890,entry.2345678901"]
+```
+
+## Dokumentation 📖
+
+Die vollständige Dokumentation ist im WordPress-Admin unter Einstellungen > SessionTags > Dokumentation verfügbar.
+
+## Kompatibilität 🔄
+
+- WordPress 5.0+
+- PHP 7.2+
+- Elementor (optional)
+- Avada Fusion Builder (optional)
