@@ -152,6 +152,7 @@ class SessionTagsAdmin
                                     <th><?php echo esc_html__('Parameter-Name', 'sessiontags'); ?></th>
                                     <th><?php echo esc_html__('URL-Kurzform', 'sessiontags'); ?></th>
                                     <th><?php echo esc_html__('Standard-Fallback', 'sessiontags'); ?></th>
+                                    <th><?php echo esc_html__('Weiterleitung', 'sessiontags'); ?></th>
                                     <th><?php echo esc_html__('Aktionen', 'sessiontags'); ?></th>
                                 </tr>
                             </thead>
@@ -180,6 +181,13 @@ class SessionTagsAdmin
                                                     value="<?php echo esc_attr($param['fallback'] ?? ''); ?>"
                                                     class="regular-text sessiontags-parameter-fallback"
                                                     placeholder="<?php echo esc_attr__('Standard-Fallback', 'sessiontags'); ?>">
+                                            </td>
+                                            <td>
+                                                <input type="text"
+                                                    name="sessiontags_parameters[<?php echo (int) $index; ?>][redirect_url]"
+                                                    value="<?php echo esc_attr($param['redirect_url'] ?? ''); ?>"
+                                                    class="regular-text sessiontags-parameter-redirect-url"
+                                                    placeholder="<?php echo esc_attr__('https://theuselessweb.com/', 'sessiontags'); ?>">
                                             </td>
                                             <td>
                                                 <button type="button" class="button remove-parameter" <?php echo (count($parameters) <= 1) ? 'style="display:none;"' : ''; ?>>
@@ -211,6 +219,13 @@ class SessionTagsAdmin
                                                 value=""
                                                 class="regular-text sessiontags-parameter-fallback"
                                                 placeholder="<?php echo esc_attr__('Standard-Fallback', 'sessiontags'); ?>">
+                                        </td>
+                                        <td>
+                                            <input type="text"
+                                                name="sessiontags_parameters[0][redirect_url]"
+                                                value=""
+                                                class="regular-text sessiontags-parameter-redirect-url"
+                                                placeholder="<?php echo esc_attr__('https://theuselessweb.com/', 'sessiontags'); ?>">
                                         </td>
                                         <td>
                                             <button type="button" class="button remove-parameter" style="display:none;">
@@ -470,7 +485,7 @@ class SessionTagsAdmin
                             <p><?php echo esc_html__('Bei Microsoft Forms können die Feldnamen je nach Formular unterschiedlich sein. Die Namen entsprechen oft dem Feldtyp (z.B. "name", "email", "r1q1" oder "question1").', 'sessiontags'); ?></p>
                             <p><?php echo esc_html__('Wenn die form_params und params identisch sind, kannst du form_params weglassen:', 'sessiontags'); ?></p>
                             <?php echo '<p>&nbsp;</p>'; ?>
-<pre><code>
+                            <pre><code>
 [st_form
 type="google"
 url="https://docs.google.com/forms/d/e/xxxxxxxxxxxxxxxxx/viewform"
@@ -578,6 +593,11 @@ height="600px"
                                 <p><?php echo esc_html__('Du kannst die gespeicherten Werte an beliebiger Stelle über Shortcodes, in Elementor, in Avada Fusion Builder oder in Formularen ausgeben.', 'sessiontags'); ?></p>
                             </div>
                         </div>
+                    </div>
+
+                    <div class="sessiontags-doc-faq-item">
+                        <h4><?php echo esc_html__('Wie funktioniert die Weiterleitung?', 'sessiontags'); ?></h4>
+                        <p><?php echo esc_html__('Wenn du eine Weiterleitungs-URL für einen Parameter konfigurierst, wird der Besucher automatisch zu dieser URL weitergeleitet, sobald er deine Website mit diesem Parameter aufruft. Der Parameter wird dabei an die Ziel-URL angehängt, sodass du den Wert auf der Zielseite weiterhin verwenden kannst.', 'sessiontags'); ?></p>
                     </div>
 
                     <div class="sessiontags-doc-section">

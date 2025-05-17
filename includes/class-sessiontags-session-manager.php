@@ -165,4 +165,71 @@ class SessionTagsSessionManager {
 
         return $encoded;
     }
+    /**
+     * Überprüft, ob eine Weiterleitung für einen Parameter notwendig ist
+     * und führt diese gegebenenfalls durch
+     */
+    public function check_and_perform_redirects()
+    {
+        // Zu verfolgende Parameter holen
+        $tracked_params = $this->get_tracked_parameters();
+
+        foreach ($tracked_params as $param) {
+            $param_name = $param['name'];
+            $param_shortcode = !empty($param['shortcode']) ? $param['shortcode'] : '';
+            $redirect_url = !empty($param['redirect_url']) ? $param['redirect_url'] : '';
+
+            // Wenn eine Weiterleitungs-URL definiert ist und der Parameter in der URL vorkommt
+            if (
+                !empty($redirect_url) &&
+                (isset($_GET[$param_name]) || (!empty($param_shortcode) && isset($_GET[$param_shortcode])))
+            ) {
+
+                // Überprüfen, ob die aktuelle URL bereits die Weiterleitungs-URL ist
+                $current_url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+                $redirect_host = parse_url($redirect_url, PHP_URL_HOST);
+                $current_host = parse_url($current_url, PHP_URL_HOST);
+
+                // Nur weiterleiten, wenn wir nicht bereits auf der Ziel-URL sind
+                if ($redirect_host !== $current_host || strpos($current_url, $redirect_url) !== 0) {
+                    // Parameter zum Ziel übertragen
+                    $url_helper = new SessionTagsUrlHelper($this);
+                    $final_redirect_url = $redirect_url;
+
+                    // Alle aktuellen Parameter an die Weiterleitungs-URL anhängen
+                    $params = [];
+                    $param_value = isset($_GET[$param_name]) ? $_GET[$param_name] : (isset($_GET[$param_shortcode]) ? $_GET[$param_shortcode] : '');
+                    $params[$param_name] = $param_value;
+
+                    $final_redirect_url = $url_helper->generate_url($redirect_url, $params);
+
+                    // Weiterleitung durchführen
+                    wp_redirect($final_redirect_url);
+                    exit;
+                }
+            }
+        }
+    }
+    
+    /**
+     * Initialisiert die Session und verarbeitet die URL-Parameter
+     */
+    public function init()
+    {
+        // Session nur starten, wenn noch keine existiert
+        if (!session_id() && !headers_sent()) {
+            session_start();
+        }
+
+        // Session-Array initialisieren, falls es noch nicht existiert
+        if (!isset($_SESSION[$this->session_key]) || !is_array($_SESSION[$this->session_key])) {
+            $_SESSION[$this->session_key] = [];
+        }
+
+        // URL-Parameter prüfen und in Session speichern
+        $this->process_url_parameters();
+
+        // Auf notwendige Weiterleitungen prüfen
+        $this->check_and_perform_redirects();
+    }
 }
