@@ -2,7 +2,7 @@
 
 /**
  * SessionTags Elementor Pro Display Condition
- * * Fügt eine Display Condition zu Elementor Pro hinzu, um Elemente basierend auf SessionTags-Parametern anzuzeigen
+ * Fügt eine Display Condition zu Elementor Pro hinzu, um Elemente basierend auf SessionTags-Parametern anzuzeigen
  */
 
 // Direkten Zugriff verhindern
@@ -10,38 +10,48 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-// FIX: Die Klassen nur definieren, wenn die Basisklasse von Elementor Pro existiert.
-// Dies verhindert fatale Fehler, wenn Elementor Pro nicht aktiv ist.
-if (class_exists('ElementorPro\Modules\DisplayConditions\Conditions\Base\Condition_Base')) {
+// Prüfen, ob die Basisklasse von Elementor Pro existiert, um fatale Fehler zu vermeiden.
+if (class_exists('\ElementorPro\Modules\DisplayConditions\Conditions\Base\Condition_Base')) {
 
     /**
      * SessionTags_Display_Condition_Base
-     * * Eine abstrakte Basisklasse, um die Initialisierung des Session Managers zu zentralisieren.
+     * Eine abstrakte Basisklasse, um die Initialisierung des Session Managers zu zentralisieren
+     * und eine eigene Gruppe für die Bedingungen zu definieren.
      */
     abstract class SessionTags_Display_Condition_Base extends \ElementorPro\Modules\DisplayConditions\Conditions\Base\Condition_Base
     {
 
         /**
+         * Hält eine Singleton-Instanz des Session Managers.
+         * @var SessionTagsSessionManager|null
+         */
+        private static $session_manager_instance = null;
+
+        /**
          * Gibt eine initialisierte Instanz des Session Managers zurück.
+         * Stellt sicher, dass die Session-Daten für die Prüfung verfügbar sind.
          *
          * @return SessionTagsSessionManager
          */
         protected function get_session_manager()
         {
-            // Stellt sicher, dass die Session-Manager-Klasse geladen ist.
-            if (!class_exists('SessionTagsSessionManager')) {
-                require_once SESSIONTAGS_PATH . 'includes/class-sessiontags-session-manager.php';
+            if (self::$session_manager_instance === null) {
+                // Stellt sicher, dass die Session-Manager-Klasse geladen ist.
+                if (!class_exists('SessionTagsSessionManager')) {
+                    require_once SESSIONTAGS_PATH . 'includes/class-sessiontags-session-manager.php';
+                }
+                self::$session_manager_instance = new SessionTagsSessionManager();
+                // WICHTIG: Die init() Methode muss aufgerufen werden, um sicherzustellen,
+                // dass die Session gestartet und die Parameter verarbeitet wurden.
+                self::$session_manager_instance->init();
             }
-            $session_manager = new SessionTagsSessionManager();
-            // FIX: Die init() Methode muss aufgerufen werden, um die Session mit den aktuellen URL-Parametern zu füllen.
-            $session_manager->init();
-            return $session_manager;
+            return self::$session_manager_instance;
         }
 
         /**
          * Gibt die Gruppe der Condition zurück.
-         * IMPROVEMENT: Eigene Gruppe für bessere Übersichtlichkeit im Elementor-Editor.
-         * * @return string
+         * Erstellt eine eigene "SessionTags"-Gruppe für eine bessere Übersichtlichkeit.
+         * @return string
          */
         public function get_group()
         {
@@ -49,21 +59,22 @@ if (class_exists('ElementorPro\Modules\DisplayConditions\Conditions\Base\Conditi
         }
 
         /**
-         * Gibt die Optionen für die Bedingung zurück.
-         * Muss von den Kindklassen implementiert werden.
+         * Implementiert die abstrakte Methode aus der Elternklasse.
+         * Diese Methode ist für die Kompatibilität mit Elementor Pro erforderlich.
+         * In unserem Fall definieren wir die Steuerelemente manuell über register_controls(),
+         * daher kann diese Methode ein leeres Array zurückgeben.
          *
          * @return array
          */
         public function get_options()
         {
-            // Diese Methode wird in den Kindklassen überschrieben.
             return [];
         }
     }
 
 
     /**
-     * Condition: SessionTags Parameter
+     * Condition: SessionTags Parameter existiert
      * Prüft, ob ein bestimmter oder irgendein Parameter in der Session existiert.
      */
     class SessionTags_Display_Condition_Exists extends SessionTags_Display_Condition_Base
@@ -71,7 +82,7 @@ if (class_exists('ElementorPro\Modules\DisplayConditions\Conditions\Base\Conditi
 
         /**
          * Gibt den eindeutigen Namen der Condition zurück.
-         * * @return string
+         * @return string
          */
         public function get_name()
         {
@@ -79,9 +90,8 @@ if (class_exists('ElementorPro\Modules\DisplayConditions\Conditions\Base\Conditi
         }
 
         /**
-         * Gibt den Label der Condition zurück.
-         * IMPROVEMENT: Klarere Benennung für die UI.
-         * * @return string
+         * Gibt den Label der Condition zurück, der im Editor angezeigt wird.
+         * @return string
          */
         public function get_label()
         {
@@ -89,7 +99,7 @@ if (class_exists('ElementorPro\Modules\DisplayConditions\Conditions\Base\Conditi
         }
 
         /**
-         * Definiert die Steuerelemente für die Bedingung.
+         * Definiert die Steuerelemente für die Bedingung im Elementor-Editor.
          */
         protected function register_controls()
         {
@@ -101,7 +111,9 @@ if (class_exists('ElementorPro\Modules\DisplayConditions\Conditions\Base\Conditi
 
             if (!empty($parameters)) {
                 foreach ($parameters as $param) {
-                    $options[$param['name']] = sprintf(__('Parameter "%s"', 'sessiontags'), $param['name']);
+                    if (!empty($param['name'])) {
+                        $options[$param['name']] = sprintf(__('Parameter "%s"', 'sessiontags'), $param['name']);
+                    }
                 }
             }
 
@@ -118,7 +130,7 @@ if (class_exists('ElementorPro\Modules\DisplayConditions\Conditions\Base\Conditi
 
         /**
          * Prüft die Condition.
-         * * @param array $args
+         * @param array $args Die in den Controls gesetzten Werte.
          * @return bool
          */
         public function check($args): bool
@@ -128,8 +140,12 @@ if (class_exists('ElementorPro\Modules\DisplayConditions\Conditions\Base\Conditi
 
             // Wenn "beliebiger Parameter" ausgewählt wurde
             if ($param_key === '_any') {
-                $all_session_params = $_SESSION['sessiontags_params'] ?? [];
-                return !empty($all_session_params);
+                // Sicherstellen, dass das Session-Array existiert.
+                $session_key = $this->get_session_key();
+                if (!isset($_SESSION[$session_key]) || !is_array($_SESSION[$session_key])) {
+                    return false;
+                }
+                return !empty($_SESSION[$session_key]);
             }
 
             // Spezifischen Parameter prüfen
@@ -138,10 +154,27 @@ if (class_exists('ElementorPro\Modules\DisplayConditions\Conditions\Base\Conditi
             // Prüfen ob der Parameter vorhanden ist (nicht null und nicht leer)
             return ($value !== null && $value !== '');
         }
+
+        /**
+         * Hilfsmethode, um den Session-Schlüssel zu bekommen (da er private ist).
+         * Reflektiert die private Eigenschaft aus dem SessionManager.
+         * @return string
+         */
+        private function get_session_key()
+        {
+            try {
+                $reflection = new ReflectionProperty('SessionTagsSessionManager', 'session_key');
+                $reflection->setAccessible(true);
+                return $reflection->getValue($this->get_session_manager());
+            } catch (ReflectionException $e) {
+                // Fallback, falls die Eigenschaft nicht existiert oder umbenannt wird.
+                return 'sessiontags_params';
+            }
+        }
     }
 
     /**
-     * Condition: SessionTags Parameter Wert
+     * Condition: SessionTags Parameter hat Wert
      * Prüft, ob ein Parameter einen bestimmten Wert hat.
      */
     class SessionTags_Display_Condition_Value extends SessionTags_Display_Condition_Base
@@ -149,7 +182,7 @@ if (class_exists('ElementorPro\Modules\DisplayConditions\Conditions\Base\Conditi
 
         /**
          * Gibt den eindeutigen Namen der Condition zurück.
-         * * @return string
+         * @return string
          */
         public function get_name()
         {
@@ -158,8 +191,7 @@ if (class_exists('ElementorPro\Modules\DisplayConditions\Conditions\Base\Conditi
 
         /**
          * Gibt den Label der Condition zurück.
-         * IMPROVEMENT: Klarere Benennung für die UI.
-         * * @return string
+         * @return string
          */
         public function get_label()
         {
@@ -177,7 +209,9 @@ if (class_exists('ElementorPro\Modules\DisplayConditions\Conditions\Base\Conditi
 
             if (!empty($parameters)) {
                 foreach ($parameters as $param) {
-                    $options[$param['name']] = $param['name'];
+                    if (!empty($param['name'])) {
+                        $options[$param['name']] = $param['name'];
+                    }
                 }
             }
 
@@ -203,7 +237,7 @@ if (class_exists('ElementorPro\Modules\DisplayConditions\Conditions\Base\Conditi
 
         /**
          * Prüft die Condition.
-         * * @param array $args
+         * @param array $args
          * @return bool
          */
         public function check($args): bool
@@ -219,8 +253,8 @@ if (class_exists('ElementorPro\Modules\DisplayConditions\Conditions\Base\Conditi
             // Parameter-Wert aus der Session holen
             $actual_value = $session_manager->get_param($param_key, null);
 
-            // Werte vergleichen (strikt, aber nach Konvertierung zu String, um Typ-Probleme zu vermeiden)
-            return (string) $actual_value === (string) $expected_value;
+            // Werte vergleichen (Groß-/Kleinschreibung wird nicht beachtet)
+            return strtolower((string) $actual_value) === strtolower((string) $expected_value);
         }
     }
 
@@ -233,7 +267,7 @@ if (class_exists('ElementorPro\Modules\DisplayConditions\Conditions\Base\Conditi
 
         /**
          * Gibt den eindeutigen Namen der Condition zurück.
-         * * @return string
+         * @return string
          */
         public function get_name()
         {
@@ -242,8 +276,7 @@ if (class_exists('ElementorPro\Modules\DisplayConditions\Conditions\Base\Conditi
 
         /**
          * Gibt den Label der Condition zurück.
-         * IMPROVEMENT: Klarere Benennung für die UI.
-         * * @return string
+         * @return string
          */
         public function get_label()
         {
@@ -261,7 +294,9 @@ if (class_exists('ElementorPro\Modules\DisplayConditions\Conditions\Base\Conditi
 
             if (!empty($parameters)) {
                 foreach ($parameters as $param) {
-                    $options[$param['name']] = $param['name'];
+                    if (!empty($param['name'])) {
+                        $options[$param['name']] = $param['name'];
+                    }
                 }
             }
 
@@ -288,7 +323,7 @@ if (class_exists('ElementorPro\Modules\DisplayConditions\Conditions\Base\Conditi
 
         /**
          * Prüft die Condition.
-         * * @param array $args
+         * @param array $args
          * @return bool
          */
         public function check($args): bool
@@ -304,14 +339,15 @@ if (class_exists('ElementorPro\Modules\DisplayConditions\Conditions\Base\Conditi
             // Parameter-Wert aus der Session holen
             $actual_value = $session_manager->get_param($param_key, null);
 
-            // Werte-String in Array umwandeln
+            // Werte-String in Array umwandeln, trimmen und in Kleinbuchstaben konvertieren
             $allowed_values = array_map('trim', explode("\n", $values_string));
+            $allowed_values = array_map('strtolower', $allowed_values);
             $allowed_values = array_filter($allowed_values, function ($value) {
                 return $value !== '';
             });
 
-            // Prüfen ob der aktuelle Wert in der Liste ist
-            return in_array((string) $actual_value, $allowed_values, true);
+            // Prüfen ob der aktuelle Wert (in Kleinbuchstaben) in der Liste ist
+            return in_array(strtolower((string) $actual_value), $allowed_values, true);
         }
     }
 }
