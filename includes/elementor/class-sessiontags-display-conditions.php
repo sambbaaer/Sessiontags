@@ -47,6 +47,18 @@ if (class_exists('ElementorPro\Modules\DisplayConditions\Conditions\Base\Conditi
         {
             return 'sessiontags';
         }
+
+        /**
+         * Gibt die Optionen für die Bedingung zurück.
+         * Muss von den Kindklassen implementiert werden.
+         *
+         * @return array
+         */
+        public function get_options()
+        {
+            // Diese Methode wird in den Kindklassen überschrieben.
+            return [];
+        }
     }
 
 
