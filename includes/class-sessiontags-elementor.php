@@ -20,17 +20,28 @@ class SessionTagsElementor
     {
         $this->session_manager = $session_manager;
 
-        // Nur weitermachen, wenn Elementor aktiviert ist
-        if (!did_action('elementor/loaded')) {
-            return;
-        }
+        // FIX: Hängt die Initialisierung an den 'elementor/init' Hook.
+        // Dies stellt sicher, dass Elementor vollständig geladen ist, bevor wir versuchen,
+        // unsere eigenen Funktionen zu registrieren.
+        add_action('elementor/init', [$this, 'init_elementor_features']);
+    }
 
-        // Elementor-Hooks registrieren
+    /**
+     * Initialisiert alle Elementor-spezifischen Funktionen.
+     * Wird über den 'elementor/init' Hook aufgerufen.
+     */
+    public function init_elementor_features()
+    {
+        // Registriert die Dynamic Tags.
         add_action('elementor/dynamic_tags/register', [$this, 'register_dynamic_tags']);
 
-        // Prüfen, ob Elementor Pro aktiv ist für Display Conditions und Form Actions
-        if (is_plugin_active('elementor-pro/elementor-pro.php')) {
+        // IMPROVEMENT: Prüft, ob die Hauptklasse von Elementor Pro existiert.
+        // Das ist zuverlässiger als is_plugin_active().
+        if (class_exists('\ElementorPro\Plugin')) {
+            // Registriert die Display Conditions.
             add_action('elementor_pro/display_conditions/register', [$this, 'register_display_conditions']);
+
+            // Registriert die Formular-Aktion.
             add_action('elementor/forms/actions/register', [$this, 'register_form_action']);
         }
     }
