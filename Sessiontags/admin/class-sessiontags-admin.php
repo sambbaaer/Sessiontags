@@ -616,6 +616,91 @@ height="600px"
                             </ol>
                         </div>
 
+                        <div class="sessiontags-doc-section">
+                            <h3>Elementor Pro Display Conditions</h3>
+                            <p>Mit SessionTags können Sie in Elementor Pro Display Conditions verwenden, um Elemente nur anzuzeigen, wenn bestimmte URL-Parameter vorhanden sind.</p>
+
+                            <div class="sessiontags-doc-steps">
+                                <h4>So verwenden Sie SessionTags Display Conditions:</h4>
+                                <ol>
+                                    <li>Wählen Sie ein Element in Elementor aus</li>
+                                    <li>Gehen Sie zum Tab "Erweitert"</li>
+                                    <li>Öffnen Sie "Display Conditions"</li>
+                                    <li>Klicken Sie auf "Bedingung hinzufügen"</li>
+                                    <li>Wählen Sie eine der SessionTags-Bedingungen aus</li>
+                                </ol>
+                            </div>
+
+                            <div class="sessiontags-doc-subsection">
+                                <h4>Verfügbare Display Conditions:</h4>
+
+                                <div class="sessiontags-doc-note">
+                                    <h5>1. SessionTags Parameter</h5>
+                                    <p>Zeigt das Element nur an, wenn ein bestimmter Parameter in der Session vorhanden ist.</p>
+                                    <ul>
+                                        <li><strong>Parameter "[Name]"</strong> - Prüft, ob der spezifische Parameter vorhanden ist</li>
+                                        <li><strong>Beliebiger Parameter</strong> - Prüft, ob mindestens ein SessionTags-Parameter vorhanden ist</li>
+                                    </ul>
+                                </div>
+
+                                <div class="sessiontags-doc-note">
+                                    <h5>2. SessionTags Parameter Wert</h5>
+                                    <p>Zeigt das Element nur an, wenn ein Parameter einen bestimmten Wert hat.</p>
+                                    <p>Beispiel: Parameter "quelle" ist gleich "newsletter"</p>
+                                </div>
+
+                                <div class="sessiontags-doc-note">
+                                    <h5>3. SessionTags Parameter ist einer von</h5>
+                                    <p>Zeigt das Element an, wenn der Parameter einen von mehreren möglichen Werten hat.</p>
+                                    <p>Beispiel: Parameter "kampagne" ist einer von: herbst2025, winter2025, sommer2025</p>
+                                </div>
+                            </div>
+
+                            <div class="sessiontags-doc-example">
+                                <h4>Anwendungsbeispiele:</h4>
+
+                                <div class="sessiontags-doc-example-card">
+                                    <h5>Beispiel 1: Willkommensnachricht für Newsletter-Abonnenten</h5>
+                                    <p>Zeigen Sie eine spezielle Nachricht nur für Besucher, die über Ihren Newsletter kommen:</p>
+                                    <ol>
+                                        <li>Erstellen Sie ein Text-Widget mit der Willkommensnachricht</li>
+                                        <li>Fügen Sie die Display Condition hinzu: "SessionTags Parameter Wert"</li>
+                                        <li>Wählen Sie: Parameter "quelle" ist gleich "newsletter"</li>
+                                    </ol>
+                                </div>
+
+                                <div class="sessiontags-doc-example-card">
+                                    <h5>Beispiel 2: Kampagnen-spezifische Angebote</h5>
+                                    <p>Zeigen Sie verschiedene Angebote basierend auf der Kampagne:</p>
+                                    <ol>
+                                        <li>Erstellen Sie mehrere Sections mit verschiedenen Angeboten</li>
+                                        <li>Verwenden Sie "SessionTags Parameter ist einer von"</li>
+                                        <li>Definieren Sie für jede Section die passenden Kampagnen-Werte</li>
+                                    </ol>
+                                </div>
+
+                                <div class="sessiontags-doc-example-card">
+                                    <h5>Beispiel 3: Tracking-Banner nur für getrackte Besucher</h5>
+                                    <p>Zeigen Sie ein Info-Banner nur für Besucher mit Tracking-Parametern:</p>
+                                    <ol>
+                                        <li>Erstellen Sie ein Info-Banner</li>
+                                        <li>Fügen Sie die Display Condition hinzu: "SessionTags Parameter"</li>
+                                        <li>Wählen Sie: "Beliebiger Parameter"</li>
+                                    </ol>
+                                </div>
+                            </div>
+
+                            <div class="sessiontags-doc-note">
+                                <h4>Wichtige Hinweise:</h4>
+                                <ul>
+                                    <li>Display Conditions funktionieren nur mit Elementor Pro</li>
+                                    <li>Die Bedingungen werden serverseitig geprüft, das Element wird gar nicht erst an den Browser gesendet</li>
+                                    <li>Sie können mehrere Bedingungen kombinieren (AND/OR-Logik)</li>
+                                    <li>Die Parameter müssen in den SessionTags-Einstellungen definiert sein</li>
+                                </ul>
+                            </div>
+                        </div>
+
                         <div class="sessiontags-doc-note">
                             <p><?php echo esc_html__('Mit Elementor kannst du Parameter überall verwenden - in Überschriften, Texten, Buttons, Bildbeschreibungen und vielem mehr!', 'sessiontags'); ?></p>
                         </div>
