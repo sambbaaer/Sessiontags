@@ -4,7 +4,7 @@
  * Plugin Name: SessionTags
  * Plugin URI: https://github.com/sambbaaer/Sessiontags
  * Description: Erfasst und speichert URL-Parameter in der PHP-Session für personalisierte Website-Erlebnisse. Bietet vielseitige Shortcodes, Elementor Dynamic Tags, Avada Fusion Builder Integration sowie URL-Verschleierung für optimiertes Kampagnen-Tracking. Unterstützt kurze Parameter-Namen, individuelle Fallback-Werte, Google Forms & Microsoft Forms Integration, URL-Generator für Parameter-Weitergabe und verschlüsselte URLs für erhöhte Sicherheit. Einfache Konfiguration über das WordPress-Dashboard.
- * Version: 1.5.4
+ * Version: 1.5.5
  * Author: Samuel Baer
  * Author URI: https://samuelbaer.ch/
  * Text Domain: sessiontags

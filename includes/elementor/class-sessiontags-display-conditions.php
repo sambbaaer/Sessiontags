@@ -109,7 +109,7 @@ if (class_exists('ElementorPro\Modules\DisplayConditions\Conditions\Base\Conditi
          * * @param array $args
          * @return bool
          */
-        public function check($args)
+        public function check($args): bool
         {
             $session_manager = $this->get_session_manager();
             $param_key = $args['param_key'] ?? '_any';
@@ -194,7 +194,7 @@ if (class_exists('ElementorPro\Modules\DisplayConditions\Conditions\Base\Conditi
          * * @param array $args
          * @return bool
          */
-        public function check($args)
+        public function check($args): bool
         {
             $session_manager = $this->get_session_manager();
             $param_key = $args['param_key'] ?? '';
@@ -279,7 +279,7 @@ if (class_exists('ElementorPro\Modules\DisplayConditions\Conditions\Base\Conditi
          * * @param array $args
          * @return bool
          */
-        public function check($args)
+        public function check($args): bool
         {
             $session_manager = $this->get_session_manager();
             $param_key = $args['param_key'] ?? '';
