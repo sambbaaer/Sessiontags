@@ -84,6 +84,7 @@ class SessionTagsAdmin
         // Dashicons für den Papierkorb
         wp_enqueue_style('dashicons');
 
+        // Admin-JavaScript laden
         wp_enqueue_script(
             'sessiontags-admin-script',
             SESSIONTAGS_URL . 'admin/admin-js.js',
@@ -91,6 +92,61 @@ class SessionTagsAdmin
             SESSIONTAGS_VERSION,
             true
         );
+
+        // AJAX-Nonce für JavaScript bereitstellen
+        wp_localize_script(
+            'sessiontags-admin-script',
+            'sessiontags_ajax',
+            [
+                'ajaxurl' => admin_url('admin-ajax.php'),
+                'nonce' => wp_create_nonce('regenerate_secret_key'),
+                'strings' => [
+                    'generating' => __('Wird generiert...', 'sessiontags'),
+                    'success' => __('Neuer geheimer Schlüssel wurde generiert!', 'sessiontags'),
+                    'error' => __('Fehler beim Generieren des Schlüssels.', 'sessiontags'),
+                    'server_error' => __('Fehler bei der Kommunikation mit dem Server.', 'sessiontags'),
+                    'regenerate' => __('Neu generieren', 'sessiontags'),
+                    'copied' => __('Kopiert!', 'sessiontags'),
+                    'copy' => __('Kopieren', 'sessiontags'),
+                ]
+            ]
+        );
+    }
+
+    /**
+     * Erweiterte Version der render_admin_page Methode - Verbesserter Secret Key Bereich
+     * Diese sollte den entsprechenden Teil in der bestehenden Methode ersetzen
+     */
+    private function render_secret_key_section($secret_key)
+    {
+        ?>
+        <div class="sessiontags-secret-key-setting">
+            <label for="secret-key"><?php echo esc_html__('Geheimer Schlüssel', 'sessiontags'); ?></label>
+            <div class="secret-key-display">
+                <input type="password"
+                    id="secret-key"
+                    name="sessiontags_secret_key"
+                    value="<?php echo esc_attr($secret_key); ?>"
+                    class="regular-text"
+                    readonly>
+                <button type="button" class="button regenerate-key">
+                    <?php echo esc_html__('Neu generieren', 'sessiontags'); ?>
+                </button>
+            </div>
+            <p class="description">
+                <?php echo esc_html__('Dieser Schlüssel wird für die Verschlüsselung der Parameter verwendet. Das Ändern des Schlüssels macht bestehende verschlüsselte URLs ungültig.', 'sessiontags'); ?>
+            </p>
+
+            <div class="sessiontags-secret-key-info" style="margin-top: 15px; padding: 12px; background: #fff3cd; border-left: 4px solid #ffc107; border-radius: 4px;">
+                <strong><?php echo esc_html__('Sicherheitshinweis:', 'sessiontags'); ?></strong>
+                <ul style="margin: 8px 0 0 20px;">
+                    <li><?php echo esc_html__('Notieren Sie sich den Schlüssel an einem sicheren Ort', 'sessiontags'); ?></li>
+                    <li><?php echo esc_html__('Bei einer Websiten-Migration muss der gleiche Schlüssel verwendet werden', 'sessiontags'); ?></li>
+                    <li><?php echo esc_html__('Ein neuer Schlüssel macht alle bestehenden verschlüsselten URLs ungültig', 'sessiontags'); ?></li>
+                </ul>
+            </div>
+        </div>
+    <?php
     }
 
     /**
@@ -117,7 +173,7 @@ class SessionTagsAdmin
         $secret_key = get_option('sessiontags_secret_key', '');
 
         // Admin-Seite rendern
-?>
+    ?>
         <div class="wrap sessiontags-admin">
             <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
 

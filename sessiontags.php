@@ -4,7 +4,7 @@
  * Plugin Name: SessionTags
  * Plugin URI: https://github.com/sambbaaer/Sessiontags
  * Description: Erfasst und speichert URL-Parameter in der PHP-Session für personalisierte Website-Erlebnisse. Bietet vielseitige Shortcodes, Elementor Dynamic Tags, Avada Fusion Builder Integration sowie URL-Verschleierung für optimiertes Kampagnen-Tracking. Unterstützt kurze Parameter-Namen, individuelle Fallback-Werte, Google Forms & Microsoft Forms Integration, URL-Generator für Parameter-Weitergabe und verschlüsselte URLs für erhöhte Sicherheit. Einfache Konfiguration über das WordPress-Dashboard.
- * Version: 1.5.7
+ * Version: 1.5.8
  * Author: Samuel Baer
  * Author URI: https://samuelbaer.ch/
  * Text Domain: sessiontags
@@ -21,7 +21,7 @@ if (!defined('ABSPATH')) {
 // Plugin-Pfad und URL definieren
 define('SESSIONTAGS_PATH', plugin_dir_path(__FILE__));
 define('SESSIONTAGS_URL', plugin_dir_url(__FILE__));
-define('SESSIONTAGS_VERSION', '1.2.0');
+define('SESSIONTAGS_VERSION', '1.5.8');
 
 /**
  * Hauptklasse des SessionTags-Plugins
@@ -30,49 +30,49 @@ class SessionTags
 {
     /**
      * Instanz der Klasse (Singleton-Pattern)
-     * * @var SessionTags
+     * @var SessionTags
      */
     private static $instance = null;
 
     /**
      * Instanz der SessionManager-Klasse
-     * * @var SessionTagsSessionManager
+     * @var SessionTagsSessionManager
      */
     private $session_manager;
 
     /**
      * Instanz der ShortcodeHandler-Klasse
-     * * @var SessionTagsShortcodeHandler
+     * @var SessionTagsShortcodeHandler
      */
     private $shortcode_handler;
 
     /**
      * Instanz der Admin-Klasse
-     * * @var SessionTagsAdmin
+     * @var SessionTagsAdmin
      */
     private $admin;
 
     /**
      * Instanz der Elementor-Klasse
-     * * @var SessionTagsElementor
+     * @var SessionTagsElementor
      */
     private $elementor;
 
     /**
      * Instanz der URL-Helper-Klasse
-     * * @var SessionTagsUrlHelper
+     * @var SessionTagsUrlHelper
      */
     private $url_helper;
 
     /**
      * Instanz der FormIntegration-Klasse
-     * * @var SessionTagsFormIntegration
+     * @var SessionTagsFormIntegration
      */
     private $form_integration;
 
     /**
      * Konstruktor der SessionTags-Klasse
-     * * Initialisiert die Plugin-Komponenten
+     * Initialisiert die Plugin-Komponenten
      */
     private function __construct()
     {
@@ -82,7 +82,7 @@ class SessionTags
 
     /**
      * Gibt die einzige Instanz der Klasse zurück (Singleton-Pattern)
-     * * @return SessionTags
+     * @return SessionTags
      */
     public static function get_instance()
     {
@@ -148,13 +148,16 @@ class SessionTags
      */
     public function init_elementor_integration()
     {
-        if (did_action('elementor/loaded')) {
-            // Registriere die benutzerdefinierten Steuerelemente für Elementor-Container
-            add_action('elementor/element/container/section_layout/after_section_start', [$this, 'add_sessiontags_visibility_controls'], 10, 2);
-
-            // Registriere den benutzerdefinierten Sichtbarkeitsfilter für Container
-            add_filter('elementor/frontend/container/should_render', [$this, 'apply_sessiontags_container_visibility'], 10, 2);
+        // Prüfen ob Elementor vollständig geladen ist
+        if (!did_action('elementor/loaded')) {
+            return; // Elementor nicht geladen, frühzeitig beenden.
         }
+
+        // Registriere die benutzerdefinierten Steuerelemente für Elementor-Container
+        add_action('elementor/element/container/section_layout/after_section_start', [$this, 'add_sessiontags_visibility_controls'], 10, 2);
+
+        // Registriere den benutzerdefinierten Sichtbarkeitsfilter für Container
+        add_filter('elementor/frontend/container/should_render', [$this, 'apply_sessiontags_container_visibility'], 10, 2);
     }
 
     /**
@@ -165,6 +168,21 @@ class SessionTags
      */
     public function add_sessiontags_visibility_controls($element, $args)
     {
+        // Verfügbare Parameter für Dropdown holen
+        $parameters = $this->session_manager->get_tracked_parameters();
+        $param_options = [];
+
+        foreach ($parameters as $param) {
+            if (!empty($param['name'])) {
+                $param_options[$param['name']] = $param['name'];
+            }
+        }
+
+        // Fallback, falls keine Parameter konfiguriert sind
+        if (empty($param_options)) {
+            $param_options[''] = esc_html__('Keine Parameter konfiguriert', 'sessiontags');
+        }
+
         $element->start_controls_section(
             'sessiontags_visibility_section',
             [
@@ -176,21 +194,24 @@ class SessionTags
         $element->add_control(
             'sessiontags_enable_visibility',
             [
-                'label' => esc_html__('Sichtbarkeit aktivieren', 'sessiontags'),
+                'label' => esc_html__('SessionTags Sichtbarkeit aktivieren', 'sessiontags'),
                 'type' => \Elementor\Controls_Manager::SWITCHER,
                 'label_on' => esc_html__('Ja', 'sessiontags'),
                 'label_off' => esc_html__('Nein', 'sessiontags'),
                 'return_value' => 'yes',
                 'default' => '',
+                'description' => esc_html__('Aktiviert die bedingte Sichtbarkeit basierend auf SessionTags-Parametern.', 'sessiontags'),
             ]
         );
 
         $element->add_control(
             'sessiontags_param_key',
             [
-                'label' => esc_html__('SessionTags Parameter Key', 'sessiontags'),
-                'type' => \Elementor\Controls_Manager::TEXT,
-                'placeholder' => esc_html__('z.B. tag', 'sessiontags'),
+                'label' => esc_html__('SessionTags Parameter', 'sessiontags'),
+                'type' => \Elementor\Controls_Manager::SELECT,
+                'options' => $param_options,
+                'default' => !empty($param_options) ? key($param_options) : '',
+                'description' => esc_html__('Wählen Sie den SessionTags-Parameter für die Sichtbarkeitsprüfung.', 'sessiontags'),
                 'condition' => [
                     'sessiontags_enable_visibility' => 'yes',
                 ],
@@ -203,6 +224,7 @@ class SessionTags
                 'label' => esc_html__('Erwarteter Parameterwert', 'sessiontags'),
                 'type' => \Elementor\Controls_Manager::TEXT,
                 'placeholder' => esc_html__('z.B. premium', 'sessiontags'),
+                'description' => esc_html__('Der Wert, mit dem der Parameter verglichen werden soll.', 'sessiontags'),
                 'condition' => [
                     'sessiontags_enable_visibility' => 'yes',
                 ],
@@ -219,6 +241,30 @@ class SessionTags
                     'hide' => esc_html__('Ausblenden, wenn Bedingung erfüllt', 'sessiontags'),
                 ],
                 'default' => 'show',
+                'description' => esc_html__('Bestimmt, ob das Element angezeigt oder ausgeblendet wird, wenn die Bedingung erfüllt ist.', 'sessiontags'),
+                'condition' => [
+                    'sessiontags_enable_visibility' => 'yes',
+                ],
+            ]
+        );
+
+        // Informations-Control für bessere UX
+        $element->add_control(
+            'sessiontags_visibility_info',
+            [
+                'type' => \Elementor\Controls_Manager::RAW_HTML,
+                'raw' => sprintf(
+                    '<div style="background: #f8f9fa; padding: 12px; border-radius: 4px; border-left: 4px solid #007cba; margin-top: 10px;">
+                        <strong>%s</strong><br>
+                        %s<br><br>
+                        <strong>%s:</strong><br>
+                        <code>%s</code>
+                    </div>',
+                    esc_html__('Hinweis', 'sessiontags'),
+                    esc_html__('Diese Sichtbarkeitsregeln funktionieren serverseitig. Das Element wird nur gerendert, wenn die Bedingung erfüllt ist. Parameter müssen zuerst in den SessionTags-Einstellungen konfiguriert werden.', 'sessiontags'),
+                    esc_html__('Beispiel-URL', 'sessiontags'),
+                    esc_url(home_url('/?tag=premium'))
+                ),
                 'condition' => [
                     'sessiontags_enable_visibility' => 'yes',
                 ],
@@ -229,7 +275,7 @@ class SessionTags
     }
 
     /**
-     * Wendet benutzerdefinierte bedingte Rendering-Logik für Elementor-Container basierend auf URL-Parametern an.
+     * Wendet benutzerdefinierte bedingte Rendering-Logik für Elementor-Container basierend auf SessionTags-Parametern an.
      *
      * @param bool $should_render Gibt an, ob das Element derzeit zum Rendern eingestellt ist (standardmäßig true).
      * @param \Elementor\Controls_Stack $element Die Elementor-Elementinstanz (Container).
@@ -258,10 +304,26 @@ class SessionTags
             return $should_render;
         }
 
-        // URL-Parameter abrufen und bereinigen
-        $actual_param_value = isset($_GET[$param_key]) ? sanitize_text_field(wp_unslash($_GET[$param_key])) : null;
+        // Sicherstellen, dass SessionManager initialisiert ist
+        if (!$this->session_manager) {
+            return $should_render;
+        }
 
-        $condition_met = ($actual_param_value === $param_value);
+        // Parameter aus Session abrufen (KORRIGIERT: verwende SessionManager statt direkten $_GET-Zugriff)
+        $actual_param_value = $this->session_manager->get_param($param_key, null);
+
+        // Prüfen ob der Parameter existiert und nicht leer ist
+        if ($actual_param_value === null || $actual_param_value === '') {
+            // Parameter existiert nicht in der Session
+            if ('show' === $logic) {
+                return false; // Nicht anzeigen, da Parameter nicht vorhanden
+            } else {
+                return true; // Anzeigen, da Parameter nicht vorhanden (hide-Logik)
+            }
+        }
+
+        // Parameter-Werte vergleichen (case-insensitive)
+        $condition_met = (strtolower(trim($actual_param_value)) === strtolower(trim($param_value)));
 
         if ('show' === $logic) {
             return $condition_met; // Anzeigen, wenn Bedingung erfüllt
@@ -289,8 +351,8 @@ class SessionTags
                     'fallback' => ''
                 ],
                 [
-                    'name' => 'id',
-                    'shortcode' => 'i',
+                    'name' => 'tag',
+                    'shortcode' => 't',
                     'fallback' => ''
                 ]
             ]);
