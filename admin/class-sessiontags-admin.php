@@ -427,7 +427,6 @@ class SessionTagsAdmin
     <?php
     }
 
-
     /**
      * Rendert den Schnellstart-Tab
      */
@@ -439,43 +438,52 @@ class SessionTagsAdmin
             <div class="inside">
                 <h3><?php _e('Was ist SessionTags?', 'sessiontags'); ?></h3>
                 <p>
-                    <?php _e('SessionTags erfasst Parameter aus URLs (wie ?quelle=google&kampagne=sommer2024) und speichert sie in der Benutzer-Session. Diese Werte können dann überall auf der Website angezeigt werden – perfekt für Tracking, Personalisierung und Marketing-Kampagnen.', 'sessiontags'); ?>
+                    <?php _e('SessionTags ist wie ein unsichtbarer Notizblock für Ihre Website. Es merkt sich, woher Ihre Besucher kommen (z.B. von Google, Facebook oder einem Newsletter) und kann diese Information überall auf Ihrer Website anzeigen. So können Sie personalisierte Inhalte erstellen und besseres Marketing betreiben.', 'sessiontags'); ?>
                 </p>
 
-                <h3><?php _e('In 3 Schritten zur ersten Tracking-URL', 'sessiontags'); ?></h3>
+                <div style="background: #e7f3ff; padding: 15px; border-left: 4px solid #2271b1; margin: 15px 0;">
+                    <strong><?php _e('Einfach erklärt:', 'sessiontags'); ?></strong><br>
+                    <?php _e('Ein Besucher klickt auf Ihren Link "website.ch?quelle=facebook" → SessionTags merkt sich "facebook" → Sie können überall "Willkommen, Facebook-Besucher!" anzeigen.', 'sessiontags'); ?>
+                </div>
+
+                <h3><?php _e('In 3 einfachen Schritten starten', 'sessiontags'); ?></h3>
                 <ol class="sessiontags-steps">
                     <li>
-                        <strong><?php _e('Parameter konfigurieren', 'sessiontags'); ?></strong><br>
-                        <?php _e('Gehen Sie zum Tab "Einstellungen" und definieren Sie Ihre Parameter (z.B. "quelle" mit Kürzel "q").', 'sessiontags'); ?>
+                        <strong><?php _e('Parameter definieren', 'sessiontags'); ?></strong><br>
+                        <?php _e('Gehen Sie zu "Einstellungen" und legen Sie fest, was Sie verfolgen möchten (z.B. "quelle" für die Herkunft Ihrer Besucher).', 'sessiontags'); ?>
                     </li>
                     <li>
-                        <strong><?php _e('URL erstellen', 'sessiontags'); ?></strong><br>
-                        <?php _e('Nutzen Sie den "URL-Builder" oder erstellen Sie manuell: ', 'sessiontags'); ?>
-                        <code><?php echo esc_url(home_url('/')); ?>?q=google</code>
+                        <strong><?php _e('Tracking-URL erstellen', 'sessiontags'); ?></strong><br>
+                        <?php _e('Verwenden Sie den "URL-Builder" oder hängen Sie Parameter manuell an:', 'sessiontags'); ?><br>
+                        <code><?php echo esc_url(home_url('/')); ?>?quelle=facebook</code>
                     </li>
                     <li>
-                        <strong><?php _e('Wert anzeigen', 'sessiontags'); ?></strong><br>
-                        <?php _e('Verwenden Sie den Shortcode ', 'sessiontags'); ?><code>[st k="quelle"]</code><?php _e(' in Ihren Inhalten.', 'sessiontags'); ?>
+                        <strong><?php _e('Werte anzeigen', 'sessiontags'); ?></strong><br>
+                        <?php _e('Fügen Sie ', 'sessiontags'); ?><code>[st k="quelle"]</code><?php _e(' in Texte, Überschriften oder Elementor-Widgets ein.', 'sessiontags'); ?>
                     </li>
                 </ol>
 
-                <h3><?php _e('Praktisches Beispiel', 'sessiontags'); ?></h3>
-                <p><?php _e('Stellen Sie sich vor, ein Besucher kommt über diese URL auf Ihre Website:', 'sessiontags'); ?></p>
+                <h3><?php _e('Vollständiges Beispiel', 'sessiontags'); ?></h3>
+                <p><?php _e('Sie teilen diesen Link auf Facebook:', 'sessiontags'); ?></p>
                 <div class="code-example">
-                    <code><?php echo esc_url(home_url('/')); ?>?quelle=google&kampagne=sommer2024</code>
+                    <code><?php echo esc_url(home_url('/')); ?>?quelle=facebook&kampagne=weihnachten2024</code>
                 </div>
 
-                <p><?php _e('Jetzt können Sie überall auf der Website anzeigen:', 'sessiontags'); ?></p>
+                <p><?php _e('Jetzt können Sie überall auf Ihrer Website diese Werte verwenden:', 'sessiontags'); ?></p>
                 <ul>
-                    <li><code>[st k="quelle"]</code> → <strong>google</strong></li>
-                    <li><code>[st k="kampagne"]</code> → <strong>sommer2024</strong></li>
+                    <li><code>[st k="quelle"]</code> zeigt: <strong>facebook</strong></li>
+                    <li><code>[st k="kampagne"]</code> zeigt: <strong>weihnachten2024</strong></li>
                 </ul>
 
-                <p><?php _e('In einem Text würde das so aussehen:', 'sessiontags'); ?></p>
+                <p><?php _e('Praktische Anwendung in einem Text:', 'sessiontags'); ?></p>
                 <div class="code-example">
-                    <?php _e('Willkommen! Sie kommen von: <strong>[st k="quelle"]</strong>', 'sessiontags'); ?>
+                    <?php _e('Hallo [st k="quelle" d="lieber Besucher"]! Entdecken Sie unsere [st k="kampagne" d="aktuellen"] Angebote.', 'sessiontags'); ?>
                 </div>
-                <p><?php _e('Ergebnis: "Willkommen! Sie kommen von: <strong>google</strong>"', 'sessiontags'); ?></p>
+                <p><?php _e('Wird zu: "Hallo facebook! Entdecken Sie unsere weihnachten2024 Angebote."', 'sessiontags'); ?></p>
+
+                <div style="background: #fff3cd; padding: 15px; border-left: 4px solid #ffc107; margin: 15px 0;">
+                    <strong><?php _e('Tipp:', 'sessiontags'); ?></strong> <?php _e('Das "d=" ist ein Fallback-Wert. Wenn kein Parameter vorhanden ist, wird dieser Text angezeigt.', 'sessiontags'); ?>
+                </div>
             </div>
         </div>
     <?php
@@ -491,121 +499,144 @@ class SessionTagsAdmin
             <h2 class="hndle"><span class="dashicons dashicons-shortcode"></span> <?php _e('Shortcode-Referenz', 'sessiontags'); ?></h2>
             <div class="inside">
                 <h3><?php _e('Parameter anzeigen: [st]', 'sessiontags'); ?></h3>
-                <p><?php _e('Der Haupt-Shortcode zur Anzeige von Session-Parametern.', 'sessiontags'); ?></p>
+                <p><?php _e('Mit diesem Shortcode zeigen Sie die gespeicherten Werte an. Kopieren Sie einfach den Code und passen Sie ihn an.', 'sessiontags'); ?></p>
 
-                <h4><?php _e('Grundlegende Syntax', 'sessiontags'); ?></h4>
+                <h4><?php _e('So einfach geht\'s', 'sessiontags'); ?></h4>
                 <div class="code-example">
-                    <code>[st k="parametername"]</code>
+                    <strong><?php _e('Basis-Version:', 'sessiontags'); ?></strong><br>
+                    <code>[st k="quelle"]</code><br><br>
+                    <strong><?php _e('Mit Fallback (empfohlen):', 'sessiontags'); ?></strong><br>
+                    <code>[st k="quelle" d="unbekannt"]</code>
                 </div>
 
-                <h4><?php _e('Attribute', 'sessiontags'); ?></h4>
+                <h4><?php _e('Alle Optionen im Überblick', 'sessiontags'); ?></h4>
                 <table class="widefat">
                     <thead>
                         <tr>
-                            <th><?php _e('Attribut', 'sessiontags'); ?></th>
-                            <th><?php _e('Beschreibung', 'sessiontags'); ?></th>
+                            <th style="width: 120px;"><?php _e('Option', 'sessiontags'); ?></th>
+                            <th><?php _e('Bedeutung', 'sessiontags'); ?></th>
                             <th><?php _e('Beispiel', 'sessiontags'); ?></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td><code>k</code> oder <code>key</code></td>
-                            <td><?php _e('Der Name des Parameters (erforderlich)', 'sessiontags'); ?></td>
+                            <td><code>k="name"</code></td>
+                            <td><?php _e('Welcher Parameter angezeigt werden soll', 'sessiontags'); ?></td>
                             <td><code>[st k="quelle"]</code></td>
                         </tr>
                         <tr>
-                            <td><code>d</code> oder <code>default</code></td>
-                            <td><?php _e('Fallback-Wert, wenn Parameter nicht existiert', 'sessiontags'); ?></td>
+                            <td><code>d="text"</code></td>
+                            <td><?php _e('Was gezeigt wird, wenn der Parameter nicht vorhanden ist', 'sessiontags'); ?></td>
                             <td><code>[st k="quelle" d="direkt"]</code></td>
                         </tr>
                     </tbody>
                 </table>
+
+                <div style="background: #e7f3ff; padding: 15px; border-left: 4px solid #2271b1; margin: 15px 0;">
+                    <strong><?php _e('Praktisches Beispiel:', 'sessiontags'); ?></strong><br>
+                    <code>[st k="quelle" d="lieber Besucher"]</code><br>
+                    <?php _e('→ Zeigt "facebook" wenn der Besucher von Facebook kommt<br>→ Zeigt "lieber Besucher" wenn er direkt auf die Seite geht', 'sessiontags'); ?>
+                </div>
             </div>
         </div>
+
         <div class="postbox">
-            <h2 class="hndle"><span class="dashicons dashicons-admin-links"></span> <?php _e('URL generieren: [st_url]', 'sessiontags'); ?></h2>
+            <h2 class="hndle"><span class="dashicons dashicons-admin-links"></span> <?php _e('Links erstellen: [st_url]', 'sessiontags'); ?></h2>
             <div class="inside">
-                <p><?php _e('Erstellt Links mit automatisch übertragenen Parametern.', 'sessiontags'); ?></p>
-                <h4><?php _e('Attribute', 'sessiontags'); ?></h4>
+                <p><?php _e('Erstellt automatisch Links, die die Parameter an andere Seiten weiterleiten. Ideal für interne Verlinkungen.', 'sessiontags'); ?></p>
+
+                <h4><?php _e('Einfaches Beispiel', 'sessiontags'); ?></h4>
+                <div class="code-example">
+                    <code>[st_url url="/kontakt/" params="quelle=facebook,kampagne=winter2024"]Jetzt Kontakt aufnehmen[/st_url]</code>
+                </div>
+                <p><?php _e('Wird zu einem Link auf /kontakt/ mit allen Parametern automatisch übertragen.', 'sessiontags'); ?></p>
+
+                <h4><?php _e('Alle Optionen', 'sessiontags'); ?></h4>
                 <table class="widefat">
                     <thead>
                         <tr>
-                            <th><?php _e('Attribut', 'sessiontags'); ?></th>
-                            <th><?php _e('Beschreibung', 'sessiontags'); ?></th>
-                            <th><?php _e('Standard', 'sessiontags'); ?></th>
+                            <th style="width: 120px;"><?php _e('Option', 'sessiontags'); ?></th>
+                            <th><?php _e('Bedeutung', 'sessiontags'); ?></th>
+                            <th><?php _e('Beispiel', 'sessiontags'); ?></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td><code>url</code></td>
-                            <td><?php _e('Ziel-URL', 'sessiontags'); ?></td>
-                            <td><?php _e('Aktuelle Homepage', 'sessiontags'); ?></td>
+                            <td><code>url=""</code></td>
+                            <td><?php _e('Wohin der Link führt', 'sessiontags'); ?></td>
+                            <td><code>url="/danke/"</code></td>
                         </tr>
                         <tr>
-                            <td><code>params</code></td>
-                            <td><?php _e('Parameter im Format "name=wert" (kommagetrennt)', 'sessiontags'); ?></td>
-                            <td><?php _e('Keine', 'sessiontags'); ?></td>
+                            <td><code>params=""</code></td>
+                            <td><?php _e('Welche Parameter mitgegeben werden (kommagetrennt)', 'sessiontags'); ?></td>
+                            <td><code>params="quelle=google"</code></td>
                         </tr>
                         <tr>
-                            <td><code>class</code></td>
-                            <td><?php _e('CSS-Klasse für den Link', 'sessiontags'); ?></td>
-                            <td><?php _e('Keine', 'sessiontags'); ?></td>
-                        </tr>
-                        <tr>
-                            <td><code>title</code></td>
-                            <td><?php _e('Title-Attribut für den Link', 'sessiontags'); ?></td>
-                            <td><?php _e('Keiner', 'sessiontags'); ?></td>
+                            <td><code>class=""</code></td>
+                            <td><?php _e('CSS-Klasse für das Design', 'sessiontags'); ?></td>
+                            <td><code>class="button-primary"</code></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
+
         <div class="postbox">
-            <h2 class="hndle"><span class="dashicons dashicons-forms"></span> <?php _e('Formulare: [st_form]', 'sessiontags'); ?></h2>
+            <h2 class="hndle"><span class="dashicons dashicons-forms"></span> <?php _e('Externe Formulare: [st_form]', 'sessiontags'); ?></h2>
             <div class="inside">
-                <p><?php _e('Bindet externe Formulare (Google Forms, Microsoft Forms) mit automatisch ausgefüllten Parametern ein.', 'sessiontags'); ?></p>
-                <h4><?php _e('Attribute', 'sessiontags'); ?></h4>
+                <p><?php _e('Bindet Google Forms oder Microsoft Forms ein und füllt sie automatisch mit Ihren SessionTags-Werten aus. Perfekt für Lead-Generierung!', 'sessiontags'); ?></p>
+
+                <h4><?php _e('Grundlegendes Beispiel', 'sessiontags'); ?></h4>
+                <div class="code-example">
+                    <code>[st_form type="google" url="https://docs.google.com/forms/d/e/1234567890/viewform" params="name,email"]</code>
+                </div>
+
+                <h4><?php _e('Alle verfügbaren Optionen', 'sessiontags'); ?></h4>
                 <table class="widefat">
                     <thead>
                         <tr>
-                            <th><?php _e('Attribut', 'sessiontags'); ?></th>
-                            <th><?php _e('Beschreibung', 'sessiontags'); ?></th>
-                            <th><?php _e('Standard', 'sessiontags'); ?></th>
+                            <th style="width: 130px;"><?php _e('Option', 'sessiontags'); ?></th>
+                            <th><?php _e('Bedeutung', 'sessiontags'); ?></th>
+                            <th><?php _e('Beispiel', 'sessiontags'); ?></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td><code>type</code></td>
-                            <td><?php _e('Formular-Typ: "google" oder "microsoft"', 'sessiontags'); ?></td>
-                            <td><code>google</code></td>
+                            <td><code>type=""</code></td>
+                            <td><?php _e('Art des Formulars: "google" oder "microsoft"', 'sessiontags'); ?></td>
+                            <td><code>type="google"</code></td>
                         </tr>
                         <tr>
-                            <td><code>url</code></td>
-                            <td><?php _e('URL des Formulars (erforderlich)', 'sessiontags'); ?></td>
-                            <td><?php _e('Keine', 'sessiontags'); ?></td>
+                            <td><code>url=""</code></td>
+                            <td><?php _e('Link zu Ihrem Formular', 'sessiontags'); ?></td>
+                            <td><code>url="https://forms.gle/xyz"</code></td>
                         </tr>
                         <tr>
-                            <td><code>params</code></td>
-                            <td><?php _e('Session-Parameter (kommagetrennt)', 'sessiontags'); ?></td>
-                            <td><?php _e('Keine', 'sessiontags'); ?></td>
+                            <td><code>params=""</code></td>
+                            <td><?php _e('Welche SessionTags übertragen werden sollen', 'sessiontags'); ?></td>
+                            <td><code>params="quelle,kampagne"</code></td>
                         </tr>
                         <tr>
-                            <td><code>form_params</code></td>
-                            <td><?php _e('Formular-Feld-IDs (kommagetrennt)', 'sessiontags'); ?></td>
-                            <td><?php _e('Wie params', 'sessiontags'); ?></td>
+                            <td><code>form_params=""</code></td>
+                            <td><?php _e('Formularfeld-IDs (siehe Anleitung unten)', 'sessiontags'); ?></td>
+                            <td><code>form_params="entry.123,entry.456"</code></td>
                         </tr>
                         <tr>
-                            <td><code>width</code></td>
-                            <td><?php _e('Breite des iFrames', 'sessiontags'); ?></td>
-                            <td><code>100%</code></td>
+                            <td><code>width=""</code></td>
+                            <td><?php _e('Breite des Formulars', 'sessiontags'); ?></td>
+                            <td><code>width="100%"</code></td>
                         </tr>
                         <tr>
-                            <td><code>height</code></td>
-                            <td><?php _e('Höhe des iFrames', 'sessiontags'); ?></td>
-                            <td><code>800px</code></td>
+                            <td><code>height=""</code></td>
+                            <td><?php _e('Höhe des Formulars', 'sessiontags'); ?></td>
+                            <td><code>height="600px"</code></td>
                         </tr>
                     </tbody>
                 </table>
+
+                <div style="background: #fff3cd; padding: 15px; border-left: 4px solid #ffc107; margin: 15px 0;">
+                    <strong><?php _e('Wichtig:', 'sessiontags'); ?></strong> <?php _e('Für die korrekte Funktion müssen Sie die Formular-Feld-IDs ermitteln. Eine detaillierte Anleitung finden Sie im Tab "Integrationen".', 'sessiontags'); ?>
+                </div>
             </div>
         </div>
     <?php
@@ -621,48 +652,144 @@ class SessionTagsAdmin
             <h2 class="hndle"><span class="dashicons dashicons-admin-plugins"></span> <?php _e('Plugin-Integrationen', 'sessiontags'); ?></h2>
             <div class="inside">
                 <h3><span class="dashicons dashicons-elementor" style="color: #9B3C8E;"></span> <?php _e('Elementor Integration', 'sessiontags'); ?></h3>
-                <p><?php _e('SessionTags integriert sich nahtlos in Elementor (Free und Pro) mit Dynamic Tags, Display Conditions und Form Actions.', 'sessiontags'); ?></p>
+                <p><?php _e('SessionTags funktioniert perfekt mit Elementor Free und Pro. Sie können Werte dynamisch anzeigen und sogar ganze Bereiche nur für bestimmte Besucher zeigen.', 'sessiontags'); ?></p>
 
-                <h4><?php _e('Dynamic Tags (Elementor Free + Pro)', 'sessiontags'); ?></h4>
+                <h4><?php _e('📝 Dynamic Tags (Elementor Free + Pro)', 'sessiontags'); ?></h4>
+                <p><?php _e('Zeigen Sie SessionTags-Werte in jedem Textfeld dynamisch an:', 'sessiontags'); ?></p>
                 <ol>
                     <li><?php _e('Bearbeiten Sie ein beliebiges Textfeld in Elementor', 'sessiontags'); ?></li>
-                    <li><?php _e('Klicken Sie auf das Dynamic-Content-Symbol', 'sessiontags'); ?> <span class="dashicons dashicons-database"></span></li>
+                    <li><?php _e('Klicken Sie auf das Dynamic-Content-Symbol', 'sessiontags'); ?> <span class="dashicons dashicons-database" style="color: #9B3C8E;"></span></li>
                     <li><?php _e('Wählen Sie "SessionTags" aus der Kategorie-Liste', 'sessiontags'); ?></li>
                     <li><?php _e('Wählen Sie Ihren Parameter und optional einen Fallback-Wert', 'sessiontags'); ?></li>
                 </ol>
 
-                <h4><?php _e('Display Conditions (nur Elementor Pro)', 'sessiontags'); ?></h4>
-                <p><?php _e('Zeigen oder verstecken Sie Elemente basierend auf SessionTags-Parametern.', 'sessiontags'); ?></p>
+                <h4><?php _e('🎯 Display Conditions (nur Elementor Pro)', 'sessiontags'); ?></h4>
+                <p><?php _e('Verstecken oder zeigen Sie ganze Bereiche basierend auf SessionTags:', 'sessiontags'); ?></p>
+                <ul>
+                    <li><strong><?php _e('Parameter existiert:', 'sessiontags'); ?></strong> <?php _e('Nur anzeigen, wenn ein bestimmter Parameter vorhanden ist', 'sessiontags'); ?></li>
+                    <li><strong><?php _e('Parameter hat Wert:', 'sessiontags'); ?></strong> <?php _e('Nur für spezifische Werte anzeigen (z.B. nur für "facebook"-Besucher)', 'sessiontags'); ?></li>
+                    <li><strong><?php _e('Parameter ist einer von:', 'sessiontags'); ?></strong> <?php _e('Für mehrere Werte anzeigen (z.B. "facebook,instagram,twitter")', 'sessiontags'); ?></li>
+                </ul>
 
-                <h4><?php _e('Form Actions (nur Elementor Pro)', 'sessiontags'); ?></h4>
-                <p><?php _e('Speichern Sie Formular-Einträge automatisch in SessionTags.', 'sessiontags'); ?></p>
+                <h4><?php _e('📋 Elementor Pro Forms - Next Step Integration', 'sessiontags'); ?></h4>
+                <p><?php _e('Speichern Sie Formular-Eingaben automatisch als SessionTags für die weitere Nutzung:', 'sessiontags'); ?></p>
+                <ol>
+                    <li><?php _e('Bearbeiten Sie ein Elementor Pro Formular', 'sessiontags'); ?></li>
+                    <li><?php _e('Gehen Sie zu "Actions After Submit"', 'sessiontags'); ?></li>
+                    <li><?php _e('Fügen Sie "In SessionTag speichern" hinzu', 'sessiontags'); ?></li>
+                    <li><?php _e('Ordnen Sie Formularfelder den SessionTags-Parametern zu', 'sessiontags'); ?></li>
+                    <li><?php _e('Nach dem Absenden stehen die Werte automatisch als SessionTags zur Verfügung', 'sessiontags'); ?></li>
+                </ol>
+
+                <div style="background: #e7f3ff; padding: 15px; border-left: 4px solid #2271b1; margin: 15px 0;">
+                    <strong><?php _e('Praktisches Beispiel:', 'sessiontags'); ?></strong><br>
+                    <?php _e('Besucher füllt Name "Max Muster" im Kontaktformular aus → wird als SessionTag "name" gespeichert → auf der Danke-Seite können Sie "Danke Max Muster!" anzeigen.', 'sessiontags'); ?>
+                </div>
             </div>
         </div>
+
+        <div class="postbox">
+            <h2 class="hndle"><span class="dashicons dashicons-forms" style="color: #4285F4;"></span> <?php _e('Google Forms Integration', 'sessiontags'); ?></h2>
+            <div class="inside">
+                <p><?php _e('Binden Sie Google Forms ein und füllen Sie sie automatisch mit SessionTags-Werten vor. Perfekt für Lead-Generierung mit Tracking-Information!', 'sessiontags'); ?></p>
+
+                <h4><?php _e('📋 Schritt-für-Schritt Anleitung', 'sessiontags'); ?></h4>
+
+                <h5><?php _e('1. Google Form vorbereiten', 'sessiontags'); ?></h5>
+                <ol>
+                    <li><?php _e('Erstellen Sie Ihr Google Form normal', 'sessiontags'); ?></li>
+                    <li><?php _e('Fügen Sie Felder hinzu, die mit SessionTags befüllt werden sollen (z.B. "Quelle", "Kampagne")', 'sessiontags'); ?></li>
+                    <li><?php _e('Klicken Sie auf "Senden" → "Link"-Tab → kopieren Sie die URL', 'sessiontags'); ?></li>
+                </ol>
+
+                <h5><?php _e('2. Formular-Feld-IDs finden', 'sessiontags'); ?></h5>
+                <ol>
+                    <li><?php _e('Öffnen Sie das Google Form in einem neuen Tab', 'sessiontags'); ?></li>
+                    <li><?php _e('Rechtsklick auf ein Feld → "Element untersuchen"', 'sessiontags'); ?></li>
+                    <li><?php _e('Suchen Sie nach "entry." gefolgt von Zahlen (z.B. "entry.1234567890")', 'sessiontags'); ?></li>
+                    <li><?php _e('Notieren Sie sich diese IDs für jedes Feld', 'sessiontags'); ?></li>
+                </ol>
+
+                <h5><?php _e('3. Shortcode verwenden', 'sessiontags'); ?></h5>
+                <div class="code-example">
+                    <strong><?php _e('Vollständiges Beispiel:', 'sessiontags'); ?></strong><br>
+                    <code>[st_form type="google" url="https://docs.google.com/forms/d/e/1FAIpQLSfABC123.../viewform" params="quelle,kampagne" form_params="entry.1234567890,entry.2345678901" height="700px"]</code>
+                </div>
+
+                <h4><?php _e('📝 Erklärung der Parameter', 'sessiontags'); ?></h4>
+                <ul>
+                    <li><strong>params="quelle,kampagne":</strong> <?php _e('Welche SessionTags übertragen werden', 'sessiontags'); ?></li>
+                    <li><strong>form_params="entry.123,entry.456":</strong> <?php _e('Die entsprechenden Google Form Feld-IDs', 'sessiontags'); ?></li>
+                </ul>
+
+                <div style="background: #d4edda; padding: 15px; border-left: 4px solid #28a745; margin: 15px 0;">
+                    <strong><?php _e('💡 Profi-Tipp:', 'sessiontags'); ?></strong> <?php _e('Verwenden Sie versteckte Felder in Google Forms für automatisches Tracking, ohne den Benutzer zu stören.', 'sessiontags'); ?>
+                </div>
+            </div>
+        </div>
+
+        <div class="postbox">
+            <h2 class="hndle"><span class="dashicons dashicons-forms" style="color: #0078D4;"></span> <?php _e('Microsoft Forms Integration', 'sessiontags'); ?></h2>
+            <div class="inside">
+                <p><?php _e('Microsoft Forms funktioniert ähnlich wie Google Forms, mit einigen kleinen Unterschieden bei der Konfiguration.', 'sessiontags'); ?></p>
+
+                <h4><?php _e('📋 Anleitung für Microsoft Forms', 'sessiontags'); ?></h4>
+
+                <h5><?php _e('1. Microsoft Form vorbereiten', 'sessiontags'); ?></h5>
+                <ol>
+                    <li><?php _e('Erstellen Sie Ihr Microsoft Form', 'sessiontags'); ?></li>
+                    <li><?php _e('Fügen Sie die gewünschten Felder hinzu', 'sessiontags'); ?></li>
+                    <li><?php _e('Klicken Sie auf "Teilen" und kopieren Sie die URL', 'sessiontags'); ?></li>
+                </ol>
+
+                <h5><?php _e('2. Feld-Namen ermitteln', 'sessiontags'); ?></h5>
+                <p><?php _e('Microsoft Forms verwendet einfachere Feld-Namen als Google Forms. Die Namen entsprechen meist dem Feldtitel oder können durch Inspektion des HTML-Codes ermittelt werden.', 'sessiontags'); ?></p>
+
+                <h5><?php _e('3. Shortcode für Microsoft Forms', 'sessiontags'); ?></h5>
+                <div class="code-example">
+                    <strong><?php _e('Beispiel:', 'sessiontags'); ?></strong><br>
+                    <code>[st_form type="microsoft" url="https://forms.office.com/pages/responsepage.aspx?id=ABC123..." params="quelle,kampagne" form_params="source,campaign"]</code>
+                </div>
+
+                <div style="background: #fff3cd; padding: 15px; border-left: 4px solid #ffc107; margin: 15px 0;">
+                    <strong><?php _e('⚠️ Hinweis:', 'sessiontags'); ?></strong> <?php _e('Die Feld-Namen bei Microsoft Forms sind oft einfacher und entsprechen dem Feldtitel. Testen Sie verschiedene Varianten, falls es nicht sofort funktioniert.', 'sessiontags'); ?>
+                </div>
+            </div>
+        </div>
+
         <div class="postbox">
             <h2 class="hndle"><span class="dashicons dashicons-admin-appearance" style="color: #E74C3C;"></span> <?php _e('Avada Fusion Builder Integration', 'sessiontags'); ?></h2>
             <div class="inside">
-                <p><?php _e('Verwenden Sie SessionTags-Parameter direkt im Avada Fusion Builder.', 'sessiontags'); ?></p>
-                <h4><?php _e('SessionTags-Element verwenden', 'sessiontags'); ?></h4>
+                <p><?php _e('Verwenden Sie SessionTags-Parameter direkt im Avada Fusion Builder für dynamische Inhalte.', 'sessiontags'); ?></p>
+                <h4><?php _e('🎨 SessionTags-Element verwenden', 'sessiontags'); ?></h4>
                 <ol>
                     <li><?php _e('Öffnen Sie den Fusion Builder', 'sessiontags'); ?></li>
                     <li><?php _e('Suchen Sie nach "SessionTags Parameter" in der Element-Liste', 'sessiontags'); ?></li>
                     <li><?php _e('Wählen Sie den gewünschten Parameter aus', 'sessiontags'); ?></li>
+                    <li><?php _e('Konfigurieren Sie das HTML-Element und CSS-Klassen nach Bedarf', 'sessiontags'); ?></li>
                 </ol>
             </div>
         </div>
+
         <div class="postbox">
-            <h2 class="hndle"><span class="dashicons dashicons-php"></span> <?php _e('PHP-Integration', 'sessiontags'); ?></h2>
+            <h2 class="hndle"><span class="dashicons dashicons-php"></span> <?php _e('PHP-Integration für Entwickler', 'sessiontags'); ?></h2>
             <div class="inside">
-                <p><?php _e('Verwenden Sie SessionTags-Parameter in Ihrem PHP-Code.', 'sessiontags'); ?></p>
+                <p><?php _e('Verwenden Sie SessionTags-Parameter direkt in Ihrem PHP-Code für erweiterte Anpassungen.', 'sessiontags'); ?></p>
 
                 <div class="code-example">
                     <code>
+                        &lt;?php<br>
                         if (class_exists('SessionTagsSessionManager')) {<br>
                         &nbsp;&nbsp;$session_manager = new SessionTagsSessionManager();<br>
                         &nbsp;&nbsp;$session_manager->init();<br><br>
                         &nbsp;&nbsp;$quelle = $session_manager->get_param('quelle', 'unbekannt');<br>
-                        &nbsp;&nbsp;echo 'Besucher kommt von: ' . esc_html($quelle);<br>
-                        }
+                        &nbsp;&nbsp;echo 'Besucher kommt von: ' . esc_html($quelle);<br><br>
+                        &nbsp;&nbsp;// Bedingte Inhalte<br>
+                        &nbsp;&nbsp;if ($quelle === 'facebook') {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;echo '&lt;div class="facebook-special"&gt;Spezielles Facebook-Angebot!&lt;/div&gt;';<br>
+                        &nbsp;&nbsp;}<br>
+                        }<br>
+                        ?&gt;
                     </code>
                 </div>
             </div>
@@ -679,36 +806,123 @@ class SessionTagsAdmin
         <div class="postbox">
             <h2 class="hndle"><span class="dashicons dashicons-format-aside"></span> <?php _e('Praktische Anwendungsbeispiele', 'sessiontags'); ?></h2>
             <div class="inside">
-                <h3><?php _e('Kampagnen-Tracking', 'sessiontags'); ?></h3>
-                <p><?php _e('Verfolgen Sie die Herkunft Ihrer Besucher und passen Sie Inhalte entsprechend an.', 'sessiontags'); ?></p>
+                <h3><?php _e('🎯 Kampagnen-Tracking und personalisierte Begrüssung', 'sessiontags'); ?></h3>
+                <p><?php _e('Begrüssen Sie Ihre Besucher persönlich und zeigen Sie, dass Sie wissen, woher sie kommen.', 'sessiontags'); ?></p>
+
+                <h4><?php _e('Beispiel: Facebook-Kampagne', 'sessiontags'); ?></h4>
                 <div class="code-example">
-                    <?php _e('URL für Google Ads:', 'sessiontags'); ?><br>
-                    <code><?php echo home_url('/'); ?>?quelle=google&kampagne=winter2024</code><br><br>
-                    <?php _e('Anzeige auf der Website:', 'sessiontags'); ?><br>
-                    <code><?php _e('Willkommen! Sie kommen von: [st k="quelle" d="unserer Website"]', 'sessiontags'); ?></code>
+                    <strong><?php _e('Tracking-URL für Facebook:', 'sessiontags'); ?></strong><br>
+                    <code><?php echo home_url('/'); ?>?quelle=facebook&kampagne=winter2024&angebot=20prozent</code>
                 </div>
 
-                <h3><?php _e('Personalisierte Begrüssung', 'sessiontags'); ?></h3>
-                <p><?php _e('Erstellen Sie personalisierte Inhalte basierend auf der Herkunft der Besucher.', 'sessiontags'); ?></p>
+                <p><?php _e('Verwenden Sie dann auf Ihrer Website:', 'sessiontags'); ?></p>
                 <div class="code-example">
-                    <?php _e('Mit Elementor Display Conditions können Sie ganzen Sektionen nur für Besucher von "facebook" anzeigen.', 'sessiontags'); ?>
+                    <strong><?php _e('Personalisierte Überschrift:', 'sessiontags'); ?></strong><br>
+                    Willkommen [st k="quelle" d="lieber Besucher"]! <br>
+                    Entdecken Sie unser [st k="angebot" d="aktuelles"] Angebot der [st k="kampagne" d="Saison"].<br><br>
+
+                    <strong><?php _e('Wird zu:', 'sessiontags'); ?></strong><br>
+                    "Willkommen facebook! Entdecken Sie unser 20prozent Angebot der winter2024."
                 </div>
 
-                <h3><?php _e('Lead-Formulare mit Tracking', 'sessiontags'); ?></h3>
-                <p><?php _e('Übertragen Sie Tracking-Informationen automatisch in Ihre Formulare (z.B. mit der Elementor Pro Form Action).', 'sessiontags'); ?></p>
+                <h3><?php _e('🎨 Bedingte Inhalte mit Elementor Pro', 'sessiontags'); ?></h3>
+                <p><?php _e('Zeigen Sie verschiedene Inhalte für verschiedene Besucherquellen.', 'sessiontags'); ?></p>
+
+                <h4><?php _e('Szenario: Social Media vs. Google', 'sessiontags'); ?></h4>
+                <ul>
+                    <li><strong><?php _e('Für Facebook-Besucher:', 'sessiontags'); ?></strong> <?php _e('Zeigen Sie eine Sektion mit "Danke für das Folgen auf Facebook!"', 'sessiontags'); ?></li>
+                    <li><strong><?php _e('Für Google-Besucher:', 'sessiontags'); ?></strong> <?php _e('Zeigen Sie SEO-optimierte Inhalte', 'sessiontags'); ?></li>
+                    <li><strong><?php _e('Für alle anderen:', 'sessiontags'); ?></strong> <?php _e('Standard-Inhalt', 'sessiontags'); ?></li>
+                </ul>
+
+                <div style="background: #e7f3ff; padding: 15px; border-left: 4px solid #2271b1; margin: 15px 0;">
+                    <strong><?php _e('Elementor Display Condition Setup:', 'sessiontags'); ?></strong><br>
+                    <code>SessionTags: Parameter hat Wert</code><br>
+                    <code>Parameter: quelle</code><br>
+                    <code>Wert: facebook</code>
+                </div>
+
+                <h3><?php _e('📋 Lead-Formulare mit automatischem Tracking', 'sessiontags'); ?></h3>
+                <p><?php _e('Sammeln Sie wertvolle Marketing-Daten automatisch, ohne den Benutzer zu belästigen.', 'sessiontags'); ?></p>
+
+                <h4><?php _e('Google Form mit versteckten Tracking-Feldern', 'sessiontags'); ?></h4>
+                <ol>
+                    <li><?php _e('Erstellen Sie ein Google Form mit sichtbaren Feldern (Name, E-Mail, Nachricht)', 'sessiontags'); ?></li>
+                    <li><?php _e('Fügen Sie versteckte Felder hinzu: "Quelle", "Kampagne", "Angebot"', 'sessiontags'); ?></li>
+                    <li><?php _e('Stellen Sie die versteckten Felder auf "immer verstecken"', 'sessiontags'); ?></li>
+                    <li><?php _e('Verwenden Sie den SessionTags-Shortcode', 'sessiontags'); ?></li>
+                </ol>
+
+                <div class="code-example">
+                    <code>[st_form type="google" url="https://docs.google.com/forms/d/e/IHRE_FORM_ID/viewform" params="quelle,kampagne,angebot" form_params="entry.123456,entry.789012,entry.345678"]</code>
+                </div>
+
+                <p><?php _e('Resultat: Sie wissen bei jeder Lead-Anfrage, woher der Kontakt kam!', 'sessiontags'); ?></p>
+
+                <h3><?php _e('🔄 Parameter-Weitergabe zwischen Seiten', 'sessiontags'); ?></h3>
+                <p><?php _e('Behalten Sie die Tracking-Information über mehrere Seiten hinweg bei.', 'sessiontags'); ?></p>
+
+                <h4><?php _e('Beispiel: Von Landingpage zu Kontaktseite', 'sessiontags'); ?></h4>
+                <p><?php _e('Auf Ihrer Landingpage verwenden Sie einen Button:', 'sessiontags'); ?></p>
+                <div class="code-example">
+                    <code>[st_url url="/kontakt/" params="quelle=[st k=quelle],kampagne=[st k=kampagne]" class="btn btn-primary"]Jetzt Kontakt aufnehmen[/st_url]</code>
+                </div>
+                <p><?php _e('Der Link führt automatisch alle Parameter mit zur Kontaktseite.', 'sessiontags'); ?></p>
+
+                <h3><?php _e('🛒 E-Commerce Anwendungen', 'sessiontags'); ?></h3>
+                <p><?php _e('Perfekt für Online-Shops und Lead-Generierung.', 'sessiontags'); ?></p>
+
+                <h4><?php _e('Rabatt-Codes je nach Quelle', 'sessiontags'); ?></h4>
+                <div class="code-example">
+                    <strong><?php _e('Beispiel-Text auf der Website:', 'sessiontags'); ?></strong><br>
+                    Ihr exklusiver [st k="quelle" d="Neukunden"]-Rabatt: <strong>[st k="rabatt" d="10%"]</strong><br><br>
+
+                    <strong><?php _e('URLs für verschiedene Kanäle:', 'sessiontags'); ?></strong><br>
+                    Facebook: <code>shop.ch?quelle=facebook&rabatt=15%</code><br>
+                    Google: <code>shop.ch?quelle=google&rabatt=10%</code><br>
+                    Newsletter: <code>shop.ch?quelle=newsletter&rabatt=20%</code>
+                </div>
+
+                <h3><?php _e('📊 A/B Testing und Optimierung', 'sessiontags'); ?></h3>
+                <p><?php _e('Testen Sie verschiedene Inhalte und messen Sie die Performance.', 'sessiontags'); ?></p>
+
+                <h4><?php _e('Beispiel: Verschiedene Überschriften testen', 'sessiontags'); ?></h4>
+                <div class="code-example">
+                    <strong><?php _e('Test-URLs:', 'sessiontags'); ?></strong><br>
+                    Version A: <code>website.ch?version=a</code><br>
+                    Version B: <code>website.ch?version=b</code><br><br>
+
+                    <strong><?php _e('Elementor Display Conditions:', 'sessiontags'); ?></strong><br>
+                    Überschrift A: Nur zeigen wenn "version = a"<br>
+                    Überschrift B: Nur zeigen wenn "version = b"
+                </div>
             </div>
         </div>
+
         <div class="postbox">
             <h2 class="hndle"><span class="dashicons dashicons-editor-help"></span> <?php _e('Häufige Fragen (FAQ)', 'sessiontags'); ?></h2>
             <div class="inside">
-                <h4><?php _e('Wie lange bleiben Parameter gespeichert?', 'sessiontags'); ?></h4>
-                <p><?php _e('Parameter bleiben für die gesamte Browser-Session gespeichert, bis der Browser geschlossen wird oder die Session explizit gelöscht wird.', 'sessiontags'); ?></p>
+                <h4><?php _e('❓ Wie lange bleiben Parameter gespeichert?', 'sessiontags'); ?></h4>
+                <p><?php _e('Parameter bleiben für die gesamte Browser-Session gespeichert, bis der Browser geschlossen wird. Das bedeutet: Ein Besucher kann durch Ihre gesamte Website navigieren und die Parameter bleiben erhalten.', 'sessiontags'); ?></p>
 
-                <h4><?php _e('Funktioniert das mit WordPress Caching?', 'sessiontags'); ?></h4>
-                <p><?php _e('Ja, da die Parameter serverseitig in der PHP-Session gespeichert und die Shortcodes bei jedem Seitenaufruf verarbeitet werden, ist es mit Caching-Plugins kompatibel.', 'sessiontags'); ?></p>
+                <h4><?php _e('⚡ Funktioniert das mit WordPress Caching?', 'sessiontags'); ?></h4>
+                <p><?php _e('Ja, perfekt! Da die Parameter serverseitig in der PHP-Session gespeichert und bei jedem Seitenaufruf neu verarbeitet werden, funktioniert es mit allen Caching-Plugins (WP Rocket, W3 Total Cache, etc.).', 'sessiontags'); ?></p>
 
-                <h4><?php _e('Ist die URL-Verschleierung sicher?', 'sessiontags'); ?></h4>
-                <p><?php _e('Die Verschleierung erschwert das Lesen und Manipulieren von Parametern, bietet aber keinen Schutz für hochsensible Daten. Verwenden Sie es für Marketing-Parameter, nicht für kritische Sicherheitsdaten.', 'sessiontags'); ?></p>
+                <h4><?php _e('🔒 Ist die URL-Verschleierung sicher?', 'sessiontags'); ?></h4>
+                <p><?php _e('Die Verschleierung macht Parameter schwer lesbar und verhindert einfache Manipulation, ist aber kein Sicherheitsfeature für sensible Daten. Verwenden Sie es für Marketing-Parameter, nicht für Passwörter oder persönliche Informationen.', 'sessiontags'); ?></p>
+
+                <h4><?php _e('📱 Funktioniert es auf mobilen Geräten?', 'sessiontags'); ?></h4>
+                <p><?php _e('Ja, SessionTags funktioniert auf allen Geräten und Browsern, da es standard PHP-Sessions verwendet.', 'sessiontags'); ?></p>
+
+                <h4><?php _e('🔄 Kann ich Parameter nachträglich ändern?', 'sessiontags'); ?></h4>
+                <p><?php _e('Ja! Mit Elementor Pro Forms können Besucher zusätzliche Daten eingeben, die als neue SessionTags gespeichert werden. Ideal für mehrstufige Lead-Generierung.', 'sessiontags'); ?></p>
+
+                <h4><?php _e('🎯 Wie viele Parameter kann ich verwenden?', 'sessiontags'); ?></h4>
+                <p><?php _e('Theoretisch unbegrenzt. In der Praxis empfehlen wir 5-10 Parameter für eine saubere URL-Struktur.', 'sessiontags'); ?></p>
+
+                <div style="background: #d4edda; padding: 15px; border-left: 4px solid #28a745; margin: 15px 0;">
+                    <strong><?php _e('💡 Support-Tipp:', 'sessiontags'); ?></strong> <?php _e('Nutzen Sie den URL-Builder für erste Tests und aktivieren Sie die Verschleierung erst, wenn alles funktioniert.', 'sessiontags'); ?>
+                </div>
             </div>
         </div>
 <?php
