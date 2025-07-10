@@ -1,21 +1,41 @@
 <?php
+
 /**
  * SessionTagsSessionManager-Klasse
  *
  * Verwaltet die PHP-Session und die URL-Parameter
  */
-class SessionTagsSessionManager {
+class SessionTagsSessionManager
+{
     /**
      * Session-Schlüssel für die gespeicherten Parameter
-     *
      * @var string
      */
     private $session_key = 'sessiontags_params';
 
     /**
+     * Cache für die zu verfolgenden Parameter
+     * @var array|null
+     */
+    private static $tracked_parameters = null;
+
+    /**
+     * Cache für den geheimen Schlüssel
+     * @var string|null
+     */
+    private static $secret_key = null;
+
+    /**
+     * Cache für die URL-Verschlüsselungs-Einstellung
+     * @var bool|null
+     */
+    private static $url_encoding_enabled = null;
+
+    /**
      * Konstruktor der SessionTagsSessionManager-Klasse
      */
-    public function __construct() {
+    public function __construct()
+    {
         // Konstruktor ohne Parameter
     }
 
@@ -25,7 +45,7 @@ class SessionTagsSessionManager {
     public function init()
     {
         // Session nur starten, wenn noch keine existiert
-        if (!session_id() && !headers_sent()) {
+        if (session_status() === PHP_SESSION_NONE && !headers_sent()) {
             session_start();
         }
 
@@ -44,7 +64,8 @@ class SessionTagsSessionManager {
     /**
      * Verarbeitet die URL-Parameter und speichert sie in der Session
      */
-    private function process_url_parameters() {
+    private function process_url_parameters()
+    {
         // Zu verfolgende Parameter holen
         $tracked_params = $this->get_tracked_parameters();
         $use_encoding = $this->is_url_encoding_enabled();
@@ -54,7 +75,7 @@ class SessionTagsSessionManager {
         foreach ($tracked_params as $param) {
             $param_name = $param['name'];
             $param_shortcode = !empty($param['shortcode']) ? $param['shortcode'] : '';
-            
+
             // Original-Parameter auf sich selbst mappen
             $param_map[$param_name] = $param_name;
 
@@ -82,12 +103,43 @@ class SessionTagsSessionManager {
     }
 
     /**
-     * Prüft, ob die URL-Verschleierung aktiviert ist
+     * Gibt die zu verfolgenden Parameter zurück (mit Caching)
+     *
+     * @return array Die zu verfolgenden Parameter
+     */
+    public function get_tracked_parameters()
+    {
+        if (self::$tracked_parameters === null) {
+            self::$tracked_parameters = get_option('sessiontags_parameters', [
+                ['name' => 'quelle', 'shortcode' => 'q', 'fallback' => '', 'redirect_url' => '']
+            ]);
+        }
+        return self::$tracked_parameters;
+    }
+
+    /**
+     * Prüft, ob die URL-Verschleierung aktiviert ist (mit Caching)
      *
      * @return bool True, wenn die URL-Verschleierung aktiviert ist, sonst false
      */
-    public function is_url_encoding_enabled() {
-        return (bool) get_option('sessiontags_url_encoding', false);
+    public function is_url_encoding_enabled()
+    {
+        if (self::$url_encoding_enabled === null) {
+            self::$url_encoding_enabled = (bool) get_option('sessiontags_url_encoding', false);
+        }
+        return self::$url_encoding_enabled;
+    }
+
+    /**
+     * Holt den geheimen Schlüssel (mit Caching)
+     * * @return string Der geheime Schlüssel
+     */
+    private function get_secret_key()
+    {
+        if (self::$secret_key === null) {
+            self::$secret_key = get_option('sessiontags_secret_key', '');
+        }
+        return self::$secret_key;
     }
 
     /**
@@ -103,9 +155,12 @@ class SessionTagsSessionManager {
 
         // Base64-Entschlüsselung
         $decoded = base64_decode($value);
+        if ($decoded === false) {
+            return ''; // Fehler bei der Dekodierung
+        }
 
         // Secret-Key-Teil entfernen
-        $secret_key = get_option('sessiontags_secret_key', '');
+        $secret_key = $this->get_secret_key();
         $parts = explode('|', $decoded);
 
         if (count($parts) > 1 && end($parts) === $secret_key) {
@@ -117,46 +172,15 @@ class SessionTagsSessionManager {
     }
 
     /**
-     * Gibt einen gespeicherten Parameter zurück
+     * Kodiert einen Parameter-Wert
      *
-     * @param string $key Der Schlüssel des Parameters
-     * @param string $default Der Standardwert, falls der Parameter nicht existiert
-     * @return string Der Wert des Parameters oder der Standardwert
+     * @param string $value Der zu kodierende Wert
+     * @return string Der kodierte Wert
      */
-    public function get_param($key, $default = '')
-    {
-        // Zuerst prüfen, ob ein individueller Fallback geliefert wurde
-        if (empty($default)) {
-            // Wenn nicht, den Standard-Fallback aus den Einstellungen verwenden
-            $parameters = $this->get_tracked_parameters();
-            foreach ($parameters as $param) {
-                if ($param['name'] === $key && isset($param['fallback'])) {
-                    $default = $param['fallback'];
-                    break;
-                }
-            }
-        }
-
-        // Parameter aus Session zurückgeben oder Fallback
-        return isset($_SESSION[$this->session_key][$key]) ? $_SESSION[$this->session_key][$key] : $default;
-    }
-
-    /**
-     * Gibt die zu verfolgenden Parameter zurück
-     *
-     * @return array Die zu verfolgenden Parameter
-     */
-    public function get_tracked_parameters()
-    {
-        return get_option('sessiontags_parameters', [
-            ['name' => 'quelle', 'shortcode' => 'q', 'fallback' => '']
-        ]);
-    }
-
     public function encode_param_value($value)
     {
         // Secret Key holen
-        $secret_key = get_option('sessiontags_secret_key', '');
+        $secret_key = $this->get_secret_key();
 
         // Wert mit Secret Key kombinieren
         $encoded = $value . '|' . $secret_key;
@@ -169,6 +193,41 @@ class SessionTagsSessionManager {
 
         return $encoded;
     }
+
+    /**
+     * Gibt einen gespeicherten Parameter zurück
+     *
+     * @param string $key Der Schlüssel des Parameters
+     * @param string $default Der individuelle Standardwert, falls der Parameter nicht existiert
+     * @return string Der Wert des Parameters oder der Standardwert
+     */
+    public function get_param($key, $default = '')
+    {
+        // Parameter aus Session holen
+        $value = isset($_SESSION[$this->session_key][$key]) ? $_SESSION[$this->session_key][$key] : null;
+
+        // Wenn der Wert in der Session existiert, diesen zurückgeben
+        if ($value !== null && $value !== '') {
+            return $value;
+        }
+
+        // Wenn ein individueller Fallback übergeben wurde, diesen verwenden
+        if (!empty($default)) {
+            return $default;
+        }
+
+        // Andernfalls den Standard-Fallback aus den Einstellungen suchen
+        $parameters = $this->get_tracked_parameters();
+        foreach ($parameters as $param) {
+            if ($param['name'] === $key && isset($param['fallback']) && $param['fallback'] !== '') {
+                return $param['fallback'];
+            }
+        }
+
+        // Wenn nichts gefunden wurde, einen leeren String zurückgeben
+        return '';
+    }
+
     /**
      * Überprüft, ob eine Weiterleitung für einen Parameter notwendig ist
      * und führt diese gegebenenfalls durch
@@ -189,28 +248,26 @@ class SessionTagsSessionManager {
                 (isset($_GET[$param_name]) || (!empty($param_shortcode) && isset($_GET[$param_shortcode])))
             ) {
 
-                // Überprüfen, ob die aktuelle URL bereits die Weiterleitungs-URL ist
+                // Überprüfen, ob die aktuelle URL bereits die Weiterleitungs-URL ist, um Loops zu vermeiden
                 $current_url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-                $redirect_host = parse_url($redirect_url, PHP_URL_HOST);
-                $current_host = parse_url($current_url, PHP_URL_HOST);
-
-                // Nur weiterleiten, wenn wir nicht bereits auf der Ziel-URL sind
-                if ($redirect_host !== $current_host || strpos($current_url, $redirect_url) !== 0) {
-                    // Parameter zum Ziel übertragen
-                    $url_helper = new SessionTagsUrlHelper($this);
-                    $final_redirect_url = $redirect_url;
-
-                    // Alle aktuellen Parameter an die Weiterleitungs-URL anhängen
-                    $params = [];
-                    $param_value = isset($_GET[$param_name]) ? $_GET[$param_name] : (isset($_GET[$param_shortcode]) ? $_GET[$param_shortcode] : '');
-                    $params[$param_name] = $param_value;
-
-                    $final_redirect_url = $url_helper->generate_url($redirect_url, $params);
-
-                    // Weiterleitung durchführen
-                    wp_redirect($final_redirect_url);
-                    exit;
+                if (strpos($current_url, $redirect_url) === 0) {
+                    continue; // Wir sind bereits auf der Ziel-URL, also nicht weiterleiten
                 }
+
+                // Parameter zum Ziel übertragen
+                $url_helper = new SessionTagsUrlHelper($this);
+                $final_redirect_url = $redirect_url;
+
+                // Alle aktuellen GET-Parameter an die Weiterleitungs-URL anhängen
+                $params_to_pass = [];
+                $param_value = isset($_GET[$param_name]) ? $_GET[$param_name] : (isset($_GET[$param_shortcode]) ? $_GET[$param_shortcode] : '');
+                $params_to_pass[$param_name] = $param_value;
+
+                $final_redirect_url = $url_helper->generate_url($redirect_url, $params_to_pass);
+
+                // Weiterleitung durchführen und Skriptausführung beenden
+                wp_redirect($final_redirect_url);
+                exit;
             }
         }
     }
