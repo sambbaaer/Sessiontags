@@ -1,115 +1,72 @@
 /**
  * SessionTags Admin Styles - WordPress Standard konform
+ * Version: 2.0
  */
 
-/* Basis Layout */
-.sessiontags-admin {
-    max-width: 1200px;
-}
-
-.sessiontags-admin h1 {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
+/* Basis Layout & Tabs */
 .sessiontags-admin h1 .dashicons {
     font-size: 28px;
     width: 28px;
     height: 28px;
 }
 
-/* Navigation Tabs */
 .nav-tab-wrapper .nav-tab {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    font-weight: 500;
 }
 
-.nav-tab-wrapper .nav-tab .dashicons {
-    font-size: 16px;
-    width: 16px;
-    height: 16px;
-}
-
-/* Tab Content */
 .tab-content {
     margin-top: 20px;
 }
 
-/* Cards - WordPress Standard */
-.sessiontags-card {
-    background: #fff;
-    border: 1px solid #c3c4c7;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
-    margin-bottom: 20px;
-}
-
-.sessiontags-card h2 {
+/* Standard Postbox-Styling wird von WP Core übernommen.
+   Wir fügen nur spezifische Anpassungen hinzu. */
+#poststuff h2.hndle {
     display: flex;
     align-items: center;
     gap: 8px;
+    font-size: 14px;
+    padding: 8px 12px;
+}
+
+#poststuff .inside {
+    padding: 12px;
     margin: 0;
-    padding: 15px 20px;
-    border-bottom: 1px solid #c3c4c7;
-    background: #f6f7f7;
-    font-size: 18px;
-    font-weight: 600;
-}
-
-.sessiontags-card h3 {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin: 0 0 15px 0;
-    font-size: 16px;
-    font-weight: 600;
-}
-
-.sessiontags-card .inside {
-    padding: 20px;
 }
 
 /* Parameter Table */
 .sessiontags-table-wrapper {
-    overflow-x: auto;
     margin: 15px 0;
 }
 
 .sessiontags-parameter-table {
-    border-collapse: collapse;
     width: 100%;
 }
 
-.sessiontags-parameter-table th {
-    background: #f6f7f7;
-    border: 1px solid #c3c4c7;
-    padding: 12px 8px;
-    text-align: left;
-    font-weight: 600;
-    font-size: 13px;
+.sessiontags-parameter-table th .required {
+    color: #d63638;
 }
 
 .sessiontags-parameter-table td {
-    border: 1px solid #c3c4c7;
-    padding: 8px;
     vertical-align: middle;
 }
 
 .sessiontags-parameter-table input[type="text"],
 .sessiontags-parameter-table input[type="url"] {
     width: 100%;
-    margin: 0;
 }
 
 .sessiontags-parameter-table .small-text {
-    max-width: 80px;
+    max-width: 100px;
+}
+
+.sessiontags-parameter-table td.actions {
+    text-align: right;
 }
 
 .sessiontags-parameter-table .button-link-delete {
     color: #d63638;
-    text-decoration: none;
     padding: 4px;
     border: none;
     background: none;
@@ -121,19 +78,8 @@
 }
 
 .sessiontags-parameter-table .button-link-delete:hover {
-    color: #d63638;
-    background: rgba(214, 54, 56, 0.1);
-}
-
-.sessiontags-parameter-table .button-link-delete .dashicons {
-    font-size: 16px;
-    width: 16px;
-    height: 16px;
-}
-
-/* Required field indicator */
-.required {
-    color: #d63638;
+    color: #fff;
+    background: #d63638;
 }
 
 /* Secret Key Wrapper */
@@ -141,7 +87,7 @@
     display: flex;
     gap: 10px;
     align-items: center;
-    max-width: 600px;
+    max-width: 500px;
 }
 
 .secret-key-wrapper input {
@@ -157,53 +103,38 @@
 
 /* URL Builder */
 .url-builder-form {
-    background: #f6f7f7;
-    padding: 20px;
-    border-radius: 4px;
-    margin-bottom: 20px;
-}
-
-.url-builder-form h3 {
-    margin-top: 20px;
-    margin-bottom: 15px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid #c3c4c7;
+    padding: 1px 0;
+    /* Clearfix */
 }
 
 .url-builder-param-row {
-    background: #fff;
-    border: 1px solid #c3c4c7;
+    background: #f6f7f7;
+    border: 1px solid #ddd;
     border-radius: 4px;
     padding: 15px;
     margin-bottom: 10px;
     display: grid;
-    grid-template-columns: 1fr 2fr auto;
+    grid-template-columns: 1fr 1fr auto;
     gap: 15px;
     align-items: center;
 }
 
-.url-builder-param-row label {
-    font-weight: 600;
-    margin: 0;
+.url-builder-param-row .param-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
-.url-builder-param-row .button-link-delete {
-    color: #d63638;
-    padding: 8px;
-    border: 1px solid transparent;
-    border-radius: 3px;
+.url-builder-param-row .param-inputs select,
+.url-builder-param-row .param-inputs input {
+    width: 100%;
 }
 
-.url-builder-param-row .button-link-delete:hover {
-    background: rgba(214, 54, 56, 0.1);
-    border-color: #d63638;
+.url-builder-param-row .remove-builder-param {
+    align-self: center;
 }
 
-/* Generated URL Output */
 .sessiontags-generated-url {
-    background: #f6f7f7;
-    padding: 20px;
-    border-radius: 4px;
     margin-top: 20px;
 }
 
@@ -214,6 +145,7 @@
     border-radius: 4px;
     resize: vertical;
     margin-bottom: 10px;
+    width: 100%;
 }
 
 .url-output .button {
@@ -223,31 +155,54 @@
 }
 
 /* Documentation Styles */
-.postbox {
-    margin-bottom: 20px;
+.docs-wrapper {
+    display: flex;
+    gap: 20px;
 }
 
-.postbox .inside {
-    padding: 15px 20px;
+.docs-nav {
+    flex: 0 0 220px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    background: #fff;
+    padding: 10px;
+    border: 1px solid #c3c4c7;
+    border-radius: 4px;
 }
 
-.postbox h3 {
-    margin-top: 0;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #c3c4c7;
+.docs-nav a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    text-decoration: none;
+    border-radius: 3px;
+    color: #2c3338;
 }
 
-.postbox h4 {
-    color: #1d2327;
-    font-size: 14px;
+.docs-nav a:hover {
+    background: #f0f0f1;
+}
+
+.docs-nav a.current {
+    background: #2271b1;
+    color: #fff;
     font-weight: 600;
-    margin: 20px 0 10px 0;
+}
+
+.docs-content {
+    flex: 1;
+}
+
+.docs-content .postbox {
+    margin-bottom: 20px;
 }
 
 /* Code Examples */
 .code-example {
     background: #f6f7f7;
-    border: 1px solid #c3c4c7;
+    border: 1px solid #ddd;
     border-radius: 4px;
     padding: 15px;
     margin: 10px 0;
@@ -255,12 +210,12 @@
     font-size: 13px;
     line-height: 1.6;
     overflow-x: auto;
+    white-space: pre-wrap;
 }
 
 .code-example code {
     background: none;
     padding: 0;
-    color: #1d2327;
     font-size: inherit;
 }
 
@@ -269,6 +224,7 @@
     counter-reset: step-counter;
     list-style: none;
     padding-left: 0;
+    margin-top: 1em;
 }
 
 .sessiontags-steps li {
@@ -295,135 +251,48 @@
     font-size: 14px;
 }
 
-/* Tables in Documentation */
-.sessiontags-card table.widefat {
-    border-collapse: collapse;
-    margin: 15px 0;
-}
-
-.sessiontags-card table.widefat th,
-.sessiontags-card table.widefat td {
-    border: 1px solid #c3c4c7;
-    padding: 10px 12px;
-    text-align: left;
-}
-
-.sessiontags-card table.widefat th {
-    background: #f6f7f7;
-    font-weight: 600;
-}
-
-.sessiontags-card table.widefat code {
-    background: #f0f0f1;
-    padding: 2px 6px;
-    border-radius: 3px;
-    font-size: 12px;
-}
-
-/* Notices within cards */
-.sessiontags-card .notice {
-    margin: 15px 0;
-}
-
-.sessiontags-card .notice.inline {
-    background: #e8f4fd;
-    border-left: 4px solid #72aee6;
-    padding: 12px;
-}
-
-.sessiontags-card .notice.inline p {
-    margin: 0 0 10px 0;
-}
-
-.sessiontags-card .notice.inline p:last-child {
-    margin-bottom: 0;
-}
-
 /* Form Elements */
-.sessiontags-card .form-table th {
+.sessiontags-admin .form-table th {
     width: 200px;
     padding: 20px 10px 20px 0;
-    vertical-align: top;
 }
 
-.sessiontags-card .form-table td {
+.sessiontags-admin .form-table td {
     padding: 15px 10px;
 }
 
-.sessiontags-card .form-table input[type="text"],
-.sessiontags-card .form-table input[type="url"],
-.sessiontags-card .form-table select,
-.sessiontags-card .form-table textarea {
-    max-width: 500px;
-}
-
 /* Buttons */
-.sessiontags-card .button {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.sessiontags-card .button .dashicons {
+.sessiontags-admin .button .dashicons {
     font-size: 16px;
     width: 16px;
     height: 16px;
 }
 
-.sessiontags-card .button-secondary {
-    color: #2271b1;
-    border-color: #2271b1;
-}
-
-.sessiontags-card .button-secondary:hover {
-    background: #2271b1;
-    color: #fff;
-}
-
 /* Responsive Design */
 @media screen and (max-width: 782px) {
-    .nav-tab-wrapper .nav-tab {
-        font-size: 12px;
-        padding: 8px 10px;
-    }
-
-    .nav-tab-wrapper .nav-tab .dashicons {
-        display: none;
-    }
-
-    .sessiontags-parameter-table {
-        font-size: 12px;
-    }
-
-    .sessiontags-parameter-table th,
-    .sessiontags-parameter-table td {
-        padding: 6px 4px;
-    }
-
     .url-builder-param-row {
-        grid-template-columns: 1fr;
-        gap: 10px;
+        grid-template-columns: 1fr auto;
     }
 
-    .secret-key-wrapper {
+    .url-builder-param-row .param-inputs {
+        grid-column: 1 / -1;
+    }
+
+    .docs-wrapper {
         flex-direction: column;
-        align-items: stretch;
     }
 
-    .sessiontags-steps li {
-        padding-left: 40px;
-    }
-
-    .sessiontags-steps li::before {
-        width: 25px;
-        height: 25px;
-        font-size: 12px;
+    .docs-nav {
+        flex-direction: row;
+        flex-wrap: wrap;
+        flex: 1;
     }
 }
 
 /* Success/Error States */
 .sessiontags-success {
-    color: #00a32a;
+    color: #00a32a !important;
+    border-color: #00a32a !important;
 }
 
 .sessiontags-error {
@@ -431,24 +300,16 @@
 }
 
 /* Loading State */
-.sessiontags-loading {
-    opacity: 0.6;
-    pointer-events: none;
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
 }
 
-/* Utility Classes */
-.sessiontags-mb-0 {
-    margin-bottom: 0;
-}
-
-.sessiontags-mt-0 {
-    margin-top: 0;
-}
-
-.sessiontags-text-center {
-    text-align: center;
-}
-
-.sessiontags-text-muted {
-    color: #646970;
+.spin {
+    animation: spin 1s linear infinite;
 }
